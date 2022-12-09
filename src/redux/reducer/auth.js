@@ -27,7 +27,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         ...prevState,
         isError: true,
         isLoading: false,
-        error: payload.error.response, //cek errornya ada dmana
+        error: payload.error.response.data.status, //cek errornya ada dmana
       };
     case register + fulfilled:
       return {

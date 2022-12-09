@@ -19,13 +19,16 @@ const registerThunk = (body, cbSuccess, cbDenied) => {
   return async dispatch => {
     try {
       dispatch(registerPending());
+      console.log('redux', body);
       const result = await register(body);
       dispatch(registerFulfilled(result.data));
+      // console.log(result.data);
       if (typeof cbSuccess === 'function') {
         cbSuccess();
       }
     } catch (error) {
       dispatch(registerRejected(error));
+      console.log(error);
       if (typeof cbDenied === 'function') {
         cbDenied();
       }

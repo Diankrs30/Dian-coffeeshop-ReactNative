@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,16 @@ import {
   ScrollView,
   TextInput,
   ToastAndroid,
+  Button,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import authAction from '../../redux/actions/auth';
+import FontAwesome, {
+  SolidIcons,
+  // RegularIcons,
+  // BrandIcons,
+} from 'react-native-fontawesome';
 
 import styles from './style';
 import bg from '../../assets/images/bg-signup.png';
@@ -22,48 +28,76 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth);
-  // const [emptyForm, setEmptyForm] = useState(true);
-  // const isLoading = useSelector(state => state.auth.isLoading);
-  const [body, setBody] = useState({
+  const isPending = useSelector(state => state.auth.isLoading);
+  const [isPwdShown, setIsPwdShown] = useState(true);
+  const [form, setForm] = useState({
     email: '',
-    password: '',
-    phoneNumber: '',
+    password_user: '',
+    phone_number: '',
   });
 
-  console.log(body);
-
-  // const checkEmptyForm = body => {
-  //   if (isLoading || !body.email || !body.password || !body.phone_number) {
-  //     return setEmptyForm(true);
-  //   }
-  //   body.email && body.password && body.phone_number && setEmptyForm(false);
-  // };
+  console.log(form);
 
   const onChangeHandler = (text, type) => {
-    setBody(form => ({...body, [type]: text}));
+    setForm(form => ({...form, [type]: text}));
+  };
+
+  const tooglePassword = () => {
+    setIsPwdShown(!isPwdShown);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(body);
-    const registerSuccess = () => {
-      ToastAndroid.show(
-        'Register success! Please check your email to verify your account',
+    console.log('page signup', form);
+
+    if (!form.email && !form.password_user && !form.phone_number) {
+      return ToastAndroid.showWithGravity(
+        'Fill your data correctly!',
         ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+    if (!form.email) {
+      return ToastAndroid.showWithGravity(
+        'Input your email!',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+    if (!form.password_user) {
+      return ToastAndroid.showWithGravity(
+        'Input your password!',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+    if (!form.phone_number) {
+      return ToastAndroid.showWithGravity(
+        'Input your phone number!',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    const registerSuccess = () => {
+      ToastAndroid.showWithGravity(
+        'Register success!',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
       );
       navigation.navigate('Login');
     };
 
     const registerDenied = () => {
-      ToastAndroid.show(`${auth.error}`, ToastAndroid.SHORT);
+      ToastAndroid.showWithGravity(
+        `${auth.error}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
     };
 
-    dispatch(authAction.registerThunk(body, registerSuccess, registerDenied));
+    dispatch(authAction.registerThunk(form, registerSuccess, registerDenied));
   };
-
-  // useEffect(() => {
-  //   checkEmptyForm(body);
-  // }, [body]);
 
   return (
     <View style={styles.container}>
@@ -75,35 +109,44 @@ const SignUp = () => {
             <TextInput
               style={styles.input}
               keyBoardType="email-address"
-              value={body.email}
+              value={form.email}
               placeholder="Enter your email address"
               placeholderTextColor="white"
               onChangeText={text => onChangeHandler(text, 'email')}
             />
-            <View>
+            <View style={styles.wrapperPwd}>
               <TextInput
-                style={styles.input}
-                secureTextEntry
-                value={body.password}
+                secureTextEntry={isPwdShown}
+                style={styles.inputPwd}
+                value={form.password_user}
                 placeholder="Enter your password"
                 placeholderTextColor="white"
-                onChangeText={text => onChangeHandler(text, 'password')}
+                onChangeText={text => onChangeHandler(text, 'password_user')}
+              />
+              <FontAwesome
+                icon={isPwdShown ? SolidIcons.eye : SolidIcons.eyeSlash}
+                style={styles.iconPwd}
+                onPress={tooglePassword}
               />
             </View>
             <TextInput
               style={styles.input}
               keyBoardType="text"
-              value={body.phoneNumber}
+              value={form.phone_number}
               placeholder="Enter your phone number"
               placeholderTextColor="white"
-              onChangeText={text => onChangeHandler(text, 'phoneNumber')}
+              onChangeText={text => onChangeHandler(text, 'phone_number')}
             />
-            <TouchableOpacity
-              style={styles.btnNewAcc}
-              // disable={emptyForm}
-              onPress={handleSubmit}>
-              <Text style={styles.textBtnNewAcc}>Create Account</Text>
-            </TouchableOpacity>
+            {isPending ? (
+              <View style={styles.btnLoading}>
+                <Button title="Create Account" disabled />
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.btnNewAcc} onPress={handleSubmit}>
+                <Text style={styles.textBtnNewAcc}>Create Account</Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={styles.btnLogin}>
               <Image style={styles.icon} source={icon} />
               <Text style={styles.textBtnLogin}>Create with Google</Text>
