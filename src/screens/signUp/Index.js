@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,25 +8,62 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import authAction from '../../redux/actions/auth';
 
-// import {useNavigation} from '@react-navigation/native';
-
-import styles from '../signUp/style';
+import styles from './style';
 import bg from '../../assets/images/bg-signup.png';
 import icon from '../../assets/images/logo-google.png';
 
 const SignUp = () => {
-  //   const navigation = useNavigation();
-  const [form, setForm] = useState({
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const auth = useSelector(state => state.auth);
+  // const [emptyForm, setEmptyForm] = useState(true);
+  // const isLoading = useSelector(state => state.auth.isLoading);
+  const [body, setBody] = useState({
     email: '',
     password: '',
     phoneNumber: '',
   });
 
+  console.log(body);
+
+  // const checkEmptyForm = body => {
+  //   if (isLoading || !body.email || !body.password || !body.phone_number) {
+  //     return setEmptyForm(true);
+  //   }
+  //   body.email && body.password && body.phone_number && setEmptyForm(false);
+  // };
+
   const onChangeHandler = (text, type) => {
-    setForm(form => ({...form, [type]: text}));
+    setBody(form => ({...body, [type]: text}));
   };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(body);
+    const registerSuccess = () => {
+      ToastAndroid.show(
+        'Register success! Please check your email to verify your account',
+        ToastAndroid.SHORT,
+      );
+      navigation.navigate('Login');
+    };
+
+    const registerDenied = () => {
+      ToastAndroid.show(`${auth.error}`, ToastAndroid.SHORT);
+    };
+
+    dispatch(authAction.registerThunk(body, registerSuccess, registerDenied));
+  };
+
+  // useEffect(() => {
+  //   checkEmptyForm(body);
+  // }, [body]);
 
   return (
     <View style={styles.container}>
@@ -38,7 +75,7 @@ const SignUp = () => {
             <TextInput
               style={styles.input}
               keyBoardType="email-address"
-              value={form.email}
+              value={body.email}
               placeholder="Enter your email address"
               placeholderTextColor="white"
               onChangeText={text => onChangeHandler(text, 'email')}
@@ -47,7 +84,7 @@ const SignUp = () => {
               <TextInput
                 style={styles.input}
                 secureTextEntry
-                value={form.password}
+                value={body.password}
                 placeholder="Enter your password"
                 placeholderTextColor="white"
                 onChangeText={text => onChangeHandler(text, 'password')}
@@ -56,12 +93,15 @@ const SignUp = () => {
             <TextInput
               style={styles.input}
               keyBoardType="text"
-              value={form.phoneNumber}
+              value={body.phoneNumber}
               placeholder="Enter your phone number"
               placeholderTextColor="white"
               onChangeText={text => onChangeHandler(text, 'phoneNumber')}
             />
-            <TouchableOpacity style={styles.btnNewAcc}>
+            <TouchableOpacity
+              style={styles.btnNewAcc}
+              // disable={emptyForm}
+              onPress={handleSubmit}>
               <Text style={styles.textBtnNewAcc}>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnLogin}>

@@ -3,7 +3,7 @@ import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import bg from '../../assets/images/bg-welcomepage.png';
-import styles from '../welcome/style';
+import styles from './style';
 
 const Welcome = () => {
   const navigation = useNavigation();
@@ -18,20 +18,20 @@ const Welcome = () => {
     <View style={styles.container}>
       <ImageBackground source={bg} resizeMode="cover" style={styles.bg}>
         <View style={styles.content}>
-          <Text style={styles.title}>Welcome!</Text>
-          <Text style={styles.text}>
-            Get a cup of coffee for free every sunday morning
-          </Text>
-          <TouchableOpacity style={styles.btnNewAcc}>
-            <Text style={styles.textBtnNewAcc} onPress={onPressSignUp}>
-              Create New Account
+          <View>
+            <Text style={styles.title}>Welcome!</Text>
+            <Text style={styles.text}>
+              Get a cup of coffee for free every sunday morning
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnLogin}>
-            <Text style={styles.textBtnLogin} onPress={onPressLogin}>
-              Login
-            </Text>
-          </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity style={styles.btnNewAcc} onPress={onPressSignUp}>
+              <Text style={styles.textBtnNewAcc}>Create New Account</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnLogin} onPress={onPressLogin}>
+              <Text style={styles.textBtnLogin}>Login</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
     </View>

@@ -15,46 +15,60 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'flex-end',
   },
   title: {
     fontSize: 65,
     fontFamily: 'Poppins-Bold',
     lineHeight: 56,
     color: '#fff',
-    textAlign: 'center',
-    paddingTop: 140,
+    marginHorizontal: 22,
+    paddingTop: 70,
     marginBottom: 50,
   },
-  form: {
-    paddingTop: 140,
+  text: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    lineHeight: 26,
+    color: '#fff',
+    textAlign: 'center',
+    marginHorizontal: 66,
   },
-  btnNewAcc: {
+  form: {
+    paddingTop: 170,
+  },
+  textForgot: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 12,
+    color: '#fff',
+    textDecorationLine: 'underline',
+    marginHorizontal: 31,
+    marginTop: 15,
+  },
+  btnLogin: {
     alignItems: 'center',
-    backgroundColor: '#6A4029',
+    backgroundColor: '#FFBA33',
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     justifyContent: 'center',
     marginHorizontal: 31,
     marginTop: 25,
   },
-  btnLogin: {
+  btnLoginWithGoogle: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     justifyContent: 'center',
     marginHorizontal: 31,
-    marginTop: 17,
-    marginBottom: 50,
+    marginTop: 25,
   },
-  textBtnNewAcc: {
-    color: '#fff',
+  textBtnLogin: {
+    color: '#000',
     fontFamily: 'Poppins-Bold',
     fontSize: 17,
   },
-  textBtnLogin: {
+  textBtnLoginWithGoogle: {
     color: 'black',
     fontFamily: 'Poppins-Regular',
     fontSize: 17,
@@ -71,6 +85,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 31,
     marginBottom: 12,
     paddingBottom: 3,
+  },
+  textLoginGoogle: {
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 25,
   },
 });
 

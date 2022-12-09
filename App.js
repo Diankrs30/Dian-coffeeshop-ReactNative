@@ -5,6 +5,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import WelcomePage from './src/screens/welcomePage/Index';
 import Welcome from './src/screens/welcome/Index';
 import SignUp from './src/screens/signUp/Index';
+import Login from './src/screens/login/Index';
+import Forgot from './src/screens/forgot/Index';
 
 function App() {
   const Stack = createStackNavigator();
@@ -30,6 +32,22 @@ function App() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
+          options={{
+            // options local
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            // options local
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Forgot"
+          component={Forgot}
           options={{
             // options local
             headerShown: false,

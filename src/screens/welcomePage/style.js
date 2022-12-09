@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
   },
   text: {
     fontSize: 65,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Bold',
     lineHeight: 56,
     color: '#fff',
     textAlign: 'center',
@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 31,
     marginTop: 400,
+    marginBottom: 50,
   },
   textBtn: {
     color: 'black',
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Bold',
     fontSize: 17,
-    fontWeight: 'bold',
   },
 });
 
