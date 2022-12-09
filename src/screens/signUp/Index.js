@@ -10,6 +10,7 @@ import {
   TextInput,
   ToastAndroid,
   Button,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -139,7 +140,8 @@ const SignUp = () => {
             />
             {isPending ? (
               <View style={styles.btnLoading}>
-                <Button title="Create Account" disabled />
+                {/* <Button title="Create Account" disabled /> */}
+                <ActivityIndicator />
               </View>
             ) : (
               <TouchableOpacity style={styles.btnNewAcc} onPress={handleSubmit}>
