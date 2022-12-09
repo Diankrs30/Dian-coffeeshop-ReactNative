@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   title: {
     fontSize: 65,
@@ -24,14 +25,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 22,
     paddingTop: 70,
     marginBottom: 50,
-  },
-  text: {
-    fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-    lineHeight: 26,
-    color: '#fff',
-    textAlign: 'center',
-    marginHorizontal: 66,
   },
   form: {
     paddingTop: 170,
@@ -92,6 +85,35 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     marginTop: 25,
+  },
+  wrapperPwd: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 31,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+    marginBottom: 12,
+  },
+  iconPwd: {
+    color: '#fff',
+  },
+  inputPwd: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+    color: '#fff',
+    flex: 1,
+    paddingBottom: 3,
+  },
+  btnLoading: {
+    backgroundColor: '#dfdfdf',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    marginHorizontal: 31,
+    marginTop: 25,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 17,
   },
 });
 

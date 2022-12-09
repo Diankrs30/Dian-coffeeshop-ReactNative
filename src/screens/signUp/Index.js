@@ -9,17 +9,12 @@ import {
   ScrollView,
   TextInput,
   ToastAndroid,
-  Button,
   ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import authAction from '../../redux/actions/auth';
-import FontAwesome, {
-  SolidIcons,
-  // RegularIcons,
-  // BrandIcons,
-} from 'react-native-fontawesome';
+import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
 
 import styles from './style';
 import bg from '../../assets/images/bg-signup.png';
@@ -140,7 +135,6 @@ const SignUp = () => {
             />
             {isPending ? (
               <View style={styles.btnLoading}>
-                {/* <Button title="Create Account" disabled /> */}
                 <ActivityIndicator />
               </View>
             ) : (

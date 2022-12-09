@@ -4,6 +4,12 @@ const HOST = process.env.API_URL;
 
 export const register = body => {
   const URL = `${HOST}/users/register`;
+  // console.log('util', body);
+  return axios.post(URL, body);
+};
+
+export const login = body => {
+  const URL = `${HOST}/auth/login`;
   console.log('util', body);
   return axios.post(URL, body);
 };

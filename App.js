@@ -7,6 +7,7 @@ import Welcome from './src/screens/welcome/Index';
 import SignUp from './src/screens/signUp/Index';
 import Login from './src/screens/login/Index';
 import Forgot from './src/screens/forgot/Index';
+import Home from './src/screens/home/Index';
 
 function App() {
   const Stack = createStackNavigator();
@@ -48,6 +49,14 @@ function App() {
         <Stack.Screen
           name="Forgot"
           component={Forgot}
+          options={{
+            // options local
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
           options={{
             // options local
             headerShown: false,
