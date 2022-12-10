@@ -7,6 +7,7 @@ import Welcome from './src/screens/welcome/Index';
 import SignUp from './src/screens/signUp/Index';
 import Login from './src/screens/login/Index';
 import Forgot from './src/screens/forgot/Index';
+import Reset from './src/screens/resetPassword/Index';
 import Home from './src/screens/home/Index';
 
 function App() {
@@ -26,7 +27,6 @@ function App() {
           name="Welcome"
           component={Welcome}
           options={{
-            // options local
             headerShown: false,
           }}
         />
@@ -34,7 +34,6 @@ function App() {
           name="SignUp"
           component={SignUp}
           options={{
-            // options local
             headerShown: false,
           }}
         />
@@ -42,15 +41,20 @@ function App() {
           name="Login"
           component={Login}
           options={{
-            // options local
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="Forgot"
+          name="Forgot Password"
           component={Forgot}
           options={{
-            // options local
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Reset Password"
+          component={Reset}
+          options={{
             headerShown: false,
           }}
         />
@@ -58,7 +62,6 @@ function App() {
           name="Home"
           component={Home}
           options={{
-            // options local
             headerShown: false,
           }}
         />

@@ -1,5 +1,5 @@
 import ACTION_STRING from './actionString';
-import {register, login} from '../../utils/auth';
+import {register, login, forgotPassword, resetPwd} from '../../utils/auth';
 
 const registerPending = () => ({
   type: ACTION_STRING.register.concat(ACTION_STRING.pending),
@@ -26,6 +26,34 @@ const loginRejected = error => ({
 
 const loginFulfilled = data => ({
   type: ACTION_STRING.login.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
+const forgotPending = () => ({
+  type: ACTION_STRING.forgotPwd.concat(ACTION_STRING.pending),
+});
+
+const forgotRejected = error => ({
+  type: ACTION_STRING.forgotPwd.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const forgotFulfilled = data => ({
+  type: ACTION_STRING.forgotPwd.concat(ACTION_STRING.fulfilled),
+  paylod: {data},
+});
+
+const resetPending = () => ({
+  type: ACTION_STRING.resetPwd.concat(ACTION_STRING.pending),
+});
+
+const resetRejected = error => ({
+  type: ACTION_STRING.resetPwd.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const resetFulfilled = data => ({
+  type: ACTION_STRING.resetPwd.concat(ACTION_STRING.fulfilled),
   payload: {data},
 });
 
@@ -69,9 +97,50 @@ const loginThunk = (body, cbSuccess, cbDenied) => {
   };
 };
 
+const forgotThunk = (body, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(forgotPending());
+      const result = await forgotPassword(body);
+      dispatch(forgotFulfilled(result.data));
+      console.log('redux action', result.data);
+      if (typeof cbSuccess === 'function') {
+        cbSuccess(result.data);
+      }
+    } catch (error) {
+      dispatch(forgotRejected(error));
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
+const resetPwdThunk = (body, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(resetPending());
+      console.log('cek body reset', body);
+      const result = await resetPwd(body);
+      dispatch(resetFulfilled(result.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(resetRejected(error));
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
 const authAction = {
   registerThunk,
   loginThunk,
+  forgotThunk,
+  resetPwdThunk,
 };
 
 export default authAction;

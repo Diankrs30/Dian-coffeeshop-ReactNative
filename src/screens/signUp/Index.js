@@ -24,7 +24,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth);
-  const isPending = useSelector(state => state.auth.isLoading);
+  // const isPending = useSelector(state => state.auth.isLoading);
   const [isPwdShown, setIsPwdShown] = useState(true);
   const [form, setForm] = useState({
     email: '',
@@ -133,7 +133,7 @@ const SignUp = () => {
               placeholderTextColor="white"
               onChangeText={text => onChangeHandler(text, 'phone_number')}
             />
-            {isPending ? (
+            {auth.isLoading ? (
               <View style={styles.btnLoading}>
                 <ActivityIndicator />
               </View>

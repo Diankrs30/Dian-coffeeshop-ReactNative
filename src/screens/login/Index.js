@@ -30,10 +30,10 @@ const SignUp = () => {
     email: '',
     password: '',
   });
-  console.log(form);
+  console.log('login', form);
 
   const onPressForgot = () => {
-    navigation.navigate('Forgot');
+    navigation.navigate('Forgot Password');
   };
 
   const onChangeHandler = (text, type) => {

@@ -1,32 +1,67 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import authAction from '../../redux/actions/auth';
 import {
   View,
   Text,
   ImageBackground,
   TouchableOpacity,
-  // Image,
   KeyboardAvoidingView,
   ScrollView,
   TextInput,
-  // ToastAndroid,
+  ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
-// import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-// import authAction from '../../redux/actions/auth';
 
 import styles from './style';
 import bg from '../../assets/images/bg-pwd.png';
-// import icon from '../../assets/images/logo-google.png';
 
-const SignUp = () => {
+const Forgot = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [body, setBody] = useState({
+  const auth = useSelector(state => state.auth);
+  const isPending = useSelector(state => state.auth.isLoading);
+  const [form, setForm] = useState({
     email: '',
-    password: '',
-    phoneNumber: '',
   });
+  // console.log('>>>>>>>>>>>>>>>>>>>', form);
 
-  console.log(body);
+  const onChangeHandler = (text, type) => {
+    setForm(form => ({...form, [type]: text}));
+  };
+
+  const handleForgot = e => {
+    e.preventDefault();
+    // console.log('cek fogort pwd', form);
+
+    if (!form.email) {
+      return ToastAndroid.showWithGravity(
+        'Input your email!',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    const forgotSuccess = () => {
+      ToastAndroid.showWithGravity(
+        'Please check your email to reset your password!',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+      navigation.navigate('Reset Password');
+    };
+
+    const forgotDenied = () => {
+      ToastAndroid.showWithGravity(
+        `${auth.error}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    };
+
+    dispatch(authAction.forgotThunk(form, forgotSuccess, forgotDenied));
+  };
 
   return (
     <View style={styles.container}>
@@ -41,17 +76,26 @@ const SignUp = () => {
             <TextInput
               style={styles.input}
               keyBoardType="email-address"
-              value={body.email}
+              value={form.email}
               placeholder="Enter your email address"
               placeholderTextColor="white"
-              // onChangeText={text => onChangeHandler(text, 'email')}
+              onChangeText={text => onChangeHandler(text, 'email')}
             />
             <Text style={styles.textConfirmation}>
               Haven&#39;t received any link?
             </Text>
-            <TouchableOpacity style={styles.resendLink}>
-              <Text style={styles.textResendLink}>Resend Link</Text>
-            </TouchableOpacity>
+
+            {isPending ? (
+              <View style={styles.btnLoading}>
+                <ActivityIndicator />
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.resendLink}
+                onPress={handleForgot}>
+                <Text style={styles.textResendLink}>Resend Link</Text>
+              </TouchableOpacity>
+            )}
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
@@ -59,4 +103,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Forgot;
