@@ -142,7 +142,6 @@ const SignUp = () => {
                 <Text style={styles.textBtnNewAcc}>Create Account</Text>
               </TouchableOpacity>
             )}
-
             <TouchableOpacity style={styles.btnLogin}>
               <Image style={styles.icon} source={icon} />
               <Text style={styles.textBtnLogin}>Create with Google</Text>

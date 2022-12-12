@@ -3,6 +3,8 @@ import ACTION_STRING from '../actions/actionString';
 const initialState = {
   userData: {
     id: null,
+    name: null,
+    role: null,
     token: null,
   },
   isLoading: false,
@@ -12,13 +14,22 @@ const initialState = {
 };
 
 const authReducer = (prevState = initialState, {type, payload}) => {
-  const {register, login, forgotPwd, resetPwd, pending, rejected, fulfilled} =
-    ACTION_STRING;
+  const {
+    register,
+    login,
+    forgotPwd,
+    resetPwd,
+    logout,
+    pending,
+    rejected,
+    fulfilled,
+  } = ACTION_STRING;
   switch (type) {
     case register + pending:
       return {
         ...prevState,
         isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -42,6 +53,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
       return {
         ...prevState,
         isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -52,6 +64,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isFulfilled: false,
         error: payload.error.response.data.status,
+        initialState,
       };
 
     case login + fulfilled:
@@ -63,6 +76,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isFulfilled: true,
         userData: {
           id: payload.data.data.id,
+          name: payload.data.data.name,
+          role: payload.data.data.role,
           token: payload.data.data.token,
         },
       };
@@ -71,6 +86,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
       return {
         ...prevState,
         isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -94,6 +110,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
       return {
         ...prevState,
         isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -111,6 +128,23 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isError: false,
         isFulfilled: true,
       };
+    case logout + pending:
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case logout + rejected:
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+        error: payload.error.response.data.status,
+      };
+    case logout + fulfilled:
+      return initialState;
 
     default:
       return prevState;

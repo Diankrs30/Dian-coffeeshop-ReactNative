@@ -1,6 +1,13 @@
 import axios from 'axios';
 
 const HOST = process.env.API_URL;
+const config = token => {
+  return {
+    headers: {
+      'x-access-token': `${token}`,
+    },
+  };
+};
 
 export const register = body => {
   const URL = `${HOST}/users/register`;
@@ -22,4 +29,9 @@ export const forgotPassword = body => {
 export const resetPwd = body => {
   const URL = `${HOST}/users/resetpassword`;
   return axios.patch(URL, body);
+};
+
+export const logout = token => {
+  const URL = `${HOST}/auth/logout`;
+  return axios.delete(URL, config(token));
 };
