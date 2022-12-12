@@ -17,6 +17,8 @@ import Profile from './src/screens/profile/Index';
 import Chat from './src/screens/chat/Index';
 import ScreenFavorite from './src/screens/favorite/Index';
 import ProductDetail from './src/screens/productDetail/Index';
+import Cart from './src/screens/cart/Index';
+import History from './src/screens/history/Index';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -27,8 +29,8 @@ const iconChat = require('./src/assets/images/chat.png');
 function App() {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator initialRouteName="Home"> */}
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
+        {/* <Stack.Navigator> */}
         <Stack.Screen
           name="Welcome Page"
           component={WelcomePage}
@@ -100,6 +102,11 @@ const HomeTab = () => (
       component={ProductDetail}
       screenOptions={{headerShown: true}}
     />
+    <Stack.Screen
+      name="Cart"
+      component={Cart}
+      screenOptions={{headerShown: true}}
+    />
   </Stack.Navigator>
 );
 
@@ -109,6 +116,7 @@ const ProfileTab = () => (
       headerShown: false,
     }}>
     <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Screen name="Order History" component={History} />
   </Stack.Navigator>
 );
 

@@ -30,6 +30,7 @@ import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
 function Navbar({children}) {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.user.profile[0]);
+  console.log(profile);
   const auth = useSelector(state => state.auth.userData);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -52,7 +53,7 @@ function Navbar({children}) {
 
   useEffect(() => {
     dispatch(userAction.getProfileThunk(auth.token));
-  }, [dispatch]);
+  }, [dispatch, auth.token]);
 
   const renderDrawer = () => {
     return (
@@ -60,6 +61,7 @@ function Navbar({children}) {
         <View style={styles.continerSwipe}>
           <Image
             source={{uri: profile.image !== null ? profile.image : DefaultImg}}
+            // source={DefaultImg}
             style={styles.imageDrawer}
           />
           <Text style={styles.username}>{profile.display_name}</Text>

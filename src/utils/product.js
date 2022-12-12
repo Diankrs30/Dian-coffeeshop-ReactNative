@@ -24,3 +24,13 @@ export const getAllProduct = param => {
 
   return axios.get(URL);
 };
+
+export const getDetailProduct = (id, token) => {
+  const URL = `${HOST}/products/product_detail/${id}`;
+  return axios.get(URL, config(token));
+};
+
+export const getSizeProduct = () => {
+  const URL = `${HOST}/size_products`;
+  return axios.get(URL);
+};

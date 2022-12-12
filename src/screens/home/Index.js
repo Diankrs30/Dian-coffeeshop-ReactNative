@@ -29,18 +29,12 @@ const Home = () => {
       .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')}`;
   };
 
-  const getAllProduct = () => {
-    const queryParam = {
-      page: 1,
-      limit: 6,
-    };
-    dispatch(productAction.getAllProductThunk(queryParam));
-  };
-
-  // const handlersearch = e => {
-  //   console.log('search', e);
-  //   setParam({search: e});
-  //   getAllProduct();
+  // const getAllProduct = () => {
+  //   const queryParam = {
+  //     page: 1,
+  //     limit: 6,
+  //   };
+  //   dispatch(productAction.getAllProductThunk(queryParam));
   // };
 
   const toProductDetail = item => {
@@ -52,8 +46,16 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getAllProduct();
-  }, []);
+    // const getAllProduct = () => {
+    const queryParam = {
+      page: 1,
+      limit: 6,
+    };
+    dispatch(productAction.getAllProductThunk(queryParam));
+    // };
+
+    // getAllProduct();
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>

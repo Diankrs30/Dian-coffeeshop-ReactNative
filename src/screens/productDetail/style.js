@@ -72,6 +72,23 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#fff',
   },
+  wrapperBtnSize: {
+    marginTop: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  btnSize: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#FFBA33',
+    borderRadius: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textBtnSize: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+  },
 });
 
 export default styles;

@@ -9,6 +9,7 @@ const ACTION_STRING = {
   getAllProduct: 'GET_ALL_PRODUCT',
   getProfile: 'USER_GETPROFILE',
   getDetailProduct: 'GET_DETAIL_PRODUCT',
+  getSize: 'GET_SIZE',
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,

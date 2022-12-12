@@ -1,11 +1,18 @@
-import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import productAction from '../../redux/actions/product';
 import {useNavigation} from '@react-navigation/native';
 
 import styles from './style';
-import ImageDefault from '../../assets/images/coffeeLatte.png';
+import ImageDefault from '../../assets/images/icon-food.png';
 
 const cart = require('../../assets/images/shopCart.png');
 const back = require('../../assets/images/iconBack.png');
@@ -14,7 +21,9 @@ const ProductDetail = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const id = props.route.params.id;
-  console.log('cek detail product', id);
+  const detailProduct = useSelector(state => state.product.detailProduct[0]);
+  const size = useSelector(state => state.product.size);
+  const auth = useSelector(state => state.auth.userData);
 
   const rupiah = number => {
     return `IDR ${number
@@ -22,20 +31,38 @@ const ProductDetail = props => {
       .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')}`;
   };
 
+  const toCart = () => {
+    navigation.navigate('Cart');
+  };
+
+  useEffect(() => {
+    dispatch(productAction.getDetailProductThunk(id, auth.token));
+    dispatch(productAction.getSizeThunk());
+  }, [dispatch, auth.token, id]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={back} />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={back} />
+        </TouchableOpacity>
         <Image source={cart} />
       </View>
       <ScrollView style={styles.section}>
         <View style={styles.wrapperImage}>
-          <Image source={ImageDefault} style={styles.image} />
+          <Image
+            source={{
+              uri: `${detailProduct.image}`
+                ? `${detailProduct.image}`
+                : ImageDefault,
+            }}
+            style={styles.image}
+          />
         </View>
         <View style={styles.content}>
           <View>
-            <Text style={styles.productName}>cold</Text>
-            <Text style={styles.price}>1000</Text>
+            <Text style={styles.productName}>{detailProduct.product_name}</Text>
+            <Text style={styles.price}>{rupiah(detailProduct.price)}</Text>
           </View>
           <View style={styles.delivery}>
             <Text style={styles.subTitle}>Delivery</Text>
@@ -46,13 +73,44 @@ const ProductDetail = props => {
           <View style={styles.descContent}>
             <Text style={styles.subTitle}>Description</Text>
             <Text style={styles.textDesc}>
-              Cold brewing is a method of brewing that combines ground coffee
-              and cool water and uses time instead of heat to extract the
-              flavor. It is brewed in small batches and steeped for as long as
-              48 hours.
+              {detailProduct.product_description}
             </Text>
           </View>
-          <TouchableOpacity style={styles.button}>
+          {detailProduct.category === 'Foods' ? (
+            <View style={styles.wrapperBtnSize}>
+              {size
+                .filter((item, idx) => idx >= 3)
+                .map((item, idx) => {
+                  return (
+                    <View key={idx}>
+                      <TouchableOpacity style={styles.btnSize}>
+                        <Text style={styles.textBtnSize}>
+                          {item.size_product}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+            </View>
+          ) : (
+            <View style={styles.wrapperBtnSize}>
+              {size
+                .filter((item, idx) => idx <= 2)
+                .map((item, idx) => {
+                  return (
+                    <View key={idx}>
+                      <TouchableOpacity style={styles.btnSize}>
+                        <Text style={styles.textBtnSize}>
+                          {item.size_product}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+            </View>
+          )}
+
+          <TouchableOpacity style={styles.button} onPress={toCart}>
             <Text style={styles.textBtn}>Add to cart</Text>
           </TouchableOpacity>
         </View>
