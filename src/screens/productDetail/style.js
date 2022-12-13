@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   wrapperBtnSize: {
-    marginTop: 50,
+    marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
@@ -88,6 +88,19 @@ const styles = StyleSheet.create({
   textBtnSize: {
     fontFamily: 'Poppins-Bold',
     fontSize: 14,
+  },
+  btnCounter: {
+    borderWidth: 1,
+    paddingHorizontal: 10,
+  },
+  wrapperCounter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
+    borderWidth: 1,
+    marginHorizontal: 70,
+    borderRadius: 20,
   },
 });
 

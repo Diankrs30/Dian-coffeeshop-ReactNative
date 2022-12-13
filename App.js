@@ -19,6 +19,8 @@ import ScreenFavorite from './src/screens/favorite/Index';
 import ProductDetail from './src/screens/productDetail/Index';
 import Cart from './src/screens/cart/Index';
 import History from './src/screens/history/Index';
+import DeliveryMethod from './src/screens/deliveriMethod/Index';
+import Payment from './src/screens/payment/payment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -29,8 +31,8 @@ const iconChat = require('./src/assets/images/chat.png');
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        {/* <Stack.Navigator> */}
+      {/* <Stack.Navigator initialRouteName="Home"> */}
+      <Stack.Navigator>
         <Stack.Screen
           name="Welcome Page"
           component={WelcomePage}
@@ -105,6 +107,16 @@ const HomeTab = () => (
     <Stack.Screen
       name="Cart"
       component={Cart}
+      screenOptions={{headerShown: true}}
+    />
+    <Stack.Screen
+      name="Delivery Method"
+      component={DeliveryMethod}
+      screenOptions={{headerShown: true}}
+    />
+    <Stack.Screen
+      name="Payment"
+      component={Payment}
       screenOptions={{headerShown: true}}
     />
   </Stack.Navigator>

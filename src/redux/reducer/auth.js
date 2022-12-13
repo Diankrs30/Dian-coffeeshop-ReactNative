@@ -28,8 +28,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case register + pending:
       return {
         ...prevState,
-        isLoading: true,
-        // isLoading: false,
+        // isLoading: true,
+        isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -52,8 +52,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case login + pending:
       return {
         ...prevState,
-        isLoading: true,
-        // isLoading: false,
+        // isLoading: true,
+        isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -85,8 +85,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case forgotPwd + pending:
       return {
         ...prevState,
-        isLoading: true,
-        // isLoading: false,
+        // isLoading: true,
+        isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -109,8 +109,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case resetPwd + pending:
       return {
         ...prevState,
-        isLoading: true,
-        // isLoading: false,
+        // isLoading: true,
+        isLoading: false,
         isError: false,
         isFulfilled: false,
       };

@@ -4,15 +4,19 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
+  ToastAndroid,
+  // ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import productAction from '../../redux/actions/product';
 import {useNavigation} from '@react-navigation/native';
+import transactionAction from '../../redux/actions/transaction';
+// import cartAction from '../../redux/actions/cart';
 
 import styles from './style';
 import ImageDefault from '../../assets/images/icon-food.png';
+// import {TextInput} from 'react-native-gesture-handler';
 
 const cart = require('../../assets/images/shopCart.png');
 const back = require('../../assets/images/iconBack.png');
@@ -25,14 +29,51 @@ const ProductDetail = props => {
   const size = useSelector(state => state.product.size);
   const auth = useSelector(state => state.auth.userData);
 
+  const [body, setBody] = useState({
+    product_item: [],
+    product_item_view: [],
+  });
+  console.log('cek body setbody', setBody);
+
   const rupiah = number => {
     return `IDR ${number
       .toString()
       .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')}`;
   };
 
-  const toCart = () => {
+  const addCart = () => {
+    console.log('>>>>>>>>>>>>>>>>>', body);
+    dispatch(transactionAction.cart(body));
     navigation.navigate('Cart');
+    // return ToastAndroid.showWithGravity(
+    //   'Added Product To Cart',
+    //   ToastAndroid.SHORT,
+    //   ToastAndroid.TOP,
+    // );
+  };
+
+  const handleSize = item => {
+    const priceUpsize = detailProduct.price + item.upsize_cost;
+    const product_item = {
+      products_id: detailProduct.id,
+      size_products_id: item.id,
+      price: priceUpsize,
+    };
+
+    const product_item_view = {
+      image: detailProduct.image,
+      product_name: detailProduct.product_name,
+      size_product_name: item.size_product,
+      price: priceUpsize,
+    };
+    console.log('handle size', product_item_view);
+
+    setBody({
+      ...body,
+      product_item: [product_item],
+      product_item_view: [product_item_view],
+    });
+    dispatch(transactionAction.cart(body));
   };
 
   useEffect(() => {
@@ -83,7 +124,9 @@ const ProductDetail = props => {
                 .map((item, idx) => {
                   return (
                     <View key={idx}>
-                      <TouchableOpacity style={styles.btnSize}>
+                      <TouchableOpacity
+                        style={styles.btnSize}
+                        onPress={() => handleSize(item)}>
                         <Text style={styles.textBtnSize}>
                           {item.size_product}
                         </Text>
@@ -99,7 +142,9 @@ const ProductDetail = props => {
                 .map((item, idx) => {
                   return (
                     <View key={idx}>
-                      <TouchableOpacity style={styles.btnSize}>
+                      <TouchableOpacity
+                        style={styles.btnSize}
+                        onPress={() => handleSize(item)}>
                         <Text style={styles.textBtnSize}>
                           {item.size_product}
                         </Text>
@@ -110,7 +155,7 @@ const ProductDetail = props => {
             </View>
           )}
 
-          <TouchableOpacity style={styles.button} onPress={toCart}>
+          <TouchableOpacity style={styles.button} onPress={addCart}>
             <Text style={styles.textBtn}>Add to cart</Text>
           </TouchableOpacity>
         </View>
