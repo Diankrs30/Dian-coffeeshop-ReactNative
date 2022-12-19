@@ -23,13 +23,14 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     pending,
     rejected,
     fulfilled,
+    authReset,
   } = ACTION_STRING;
   switch (type) {
     case register + pending:
       return {
         ...prevState,
-        // isLoading: true,
-        isLoading: false,
+        isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -40,6 +41,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isFulfilled: false,
         error: payload.error.response.data.status,
+        initialState,
       };
     case register + fulfilled:
       return {
@@ -52,8 +54,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case login + pending:
       return {
         ...prevState,
-        // isLoading: true,
-        isLoading: false,
+        isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -85,8 +87,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case forgotPwd + pending:
       return {
         ...prevState,
-        // isLoading: true,
-        isLoading: false,
+        isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -97,6 +99,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isFulfilled: false,
         error: payload.error.response.data.status,
+        initialState,
       };
     case forgotPwd + fulfilled:
       return {
@@ -109,8 +112,8 @@ const authReducer = (prevState = initialState, {type, payload}) => {
     case resetPwd + pending:
       return {
         ...prevState,
-        // isLoading: true,
-        isLoading: false,
+        isLoading: true,
+        // isLoading: false,
         isError: false,
         isFulfilled: false,
       };
@@ -120,6 +123,7 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         error: payload.error.response.data.status,
+        initialState,
       };
     case resetPwd + fulfilled:
       return {
@@ -142,8 +146,12 @@ const authReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isFulfilled: false,
         error: payload.error.response.data.status,
+        initialState,
       };
     case logout + fulfilled:
+      return initialState;
+
+    case authReset:
       return initialState;
 
     default:

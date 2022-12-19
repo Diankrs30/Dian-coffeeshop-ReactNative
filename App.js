@@ -20,8 +20,9 @@ import ProductDetail from './src/screens/productDetail/Index';
 import Cart from './src/screens/cart/Index';
 import History from './src/screens/history/Index';
 import DeliveryMethod from './src/screens/deliveriMethod/Index';
-import Payment from './src/screens/payment/payment';
-
+import Payment from './src/screens/payment/Index';
+import EditProfile from './src/screens/editProfile/Index';
+import Splashscreen from './src/screens/splash/Index.js';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const iconHome = require('./src/assets/images/home.png');
@@ -31,13 +32,12 @@ const iconChat = require('./src/assets/images/chat.png');
 function App() {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator initialRouteName="Home"> */}
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="SplashScreen">
+        {/* <Stack.Navigator> */}
         <Stack.Screen
           name="Welcome Page"
           component={WelcomePage}
           options={{
-            // options local
             headerShown: false,
           }}
         />
@@ -72,6 +72,13 @@ function App() {
         <Stack.Screen
           name="Reset Password"
           component={Reset}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SplashScreen"
+          component={Splashscreen}
           options={{
             headerShown: false,
           }}
@@ -128,7 +135,9 @@ const ProfileTab = () => (
       headerShown: false,
     }}>
     <Stack.Screen name="Profile" component={Profile} />
-    <Stack.Screen name="Order History" component={History} />
+    <Stack.Screen name="History" component={History} />
+
+    <Stack.Screen name="Edit Profile" component={EditProfile} />
   </Stack.Navigator>
 );
 

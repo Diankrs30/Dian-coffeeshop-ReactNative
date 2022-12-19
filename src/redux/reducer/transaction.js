@@ -8,9 +8,6 @@ const initialState = {
   meta: {},
   history: [],
   product_item: [],
-  product_item_view: [],
-  // productItm: [],
-  // productItmView: [],
 };
 
 const transactionReducer = (prevState = initialState, {type, payload}) => {
@@ -18,9 +15,11 @@ const transactionReducer = (prevState = initialState, {type, payload}) => {
     createTransaction,
     createCart,
     getHistory,
+    resetCart,
     pending,
     rejected,
     fulfilled,
+    transactionReset,
   } = ACTION_STRING;
   switch (type) {
     case createTransaction + pending:
@@ -39,6 +38,7 @@ const transactionReducer = (prevState = initialState, {type, payload}) => {
         error: payload.error.response.data,
       };
     case createTransaction + fulfilled:
+      console.log('create transaction', payload);
       return {
         ...prevState,
         isLoading: false,
@@ -67,17 +67,21 @@ const transactionReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isError: false,
         isFulfilled: true,
-        allProduct: payload.data.data,
+        history: payload.data.data,
         meta: payload.data.meta,
       };
 
     case createCart:
-      console.log('nnnnnnn', payload);
       return {
         ...prevState,
-        product_item: payload.data.product_item,
-        product_item_view: payload.data.product_item_view,
+        product_item: [...prevState.product_item, payload.data],
       };
+
+    case resetCart:
+      return initialState;
+
+    case transactionReset:
+      return initialState;
 
     default:
       return prevState;

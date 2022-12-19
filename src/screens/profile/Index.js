@@ -18,13 +18,13 @@ const back = require('../../assets/images/iconBack.png');
 const next = require('../../assets/images/arrowRight.png');
 
 const Profile = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const profile = useSelector(state => state.user.profile[0]);
-  const auth = useSelector(state => state.auth);
+  const navigation = useNavigation();
+  const profile = useSelector(state => state.user.profile);
+  const auth = useSelector(state => state.auth.userData);
 
   const toOerderHistory = () => {
-    navigation.navigate('Order History');
+    navigation.navigate('History');
   };
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const Profile = () => {
         <Text style={styles.titleContent}>My profile</Text>
         <View style={styles.subTitle}>
           <Text style={styles.textInfo}>Your Information</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Edit Profile')}>
             <Text style={styles.btnEdit}>edit</Text>
           </TouchableOpacity>
         </View>
@@ -54,7 +54,8 @@ const Profile = () => {
               ) : (
                 <Image
                   source={{
-                    uri: profile.image !== null ? profile.image : DefaultImg,
+                    uri:
+                      profile[0].image !== null ? profile[0].image : DefaultImg,
                   }}
                   style={{width: 80, height: 80, borderRadius: 200}}
                 />
@@ -62,7 +63,7 @@ const Profile = () => {
             </View>
           </View>
           <View>
-            <Text style={styles.textName}>{profile.display_name}</Text>
+            <Text style={styles.textName}>{profile[0].display_name}</Text>
             <View
               style={{
                 borderBottomWidth: 0.5,
@@ -70,7 +71,7 @@ const Profile = () => {
                 borderBottomColor: '#6A4029',
                 marginBottom: 10,
               }}>
-              <Text style={styles.textEmail}>{profile.email}</Text>
+              <Text style={styles.textEmail}>{profile[0].email}</Text>
             </View>
             <View
               style={{
@@ -79,9 +80,9 @@ const Profile = () => {
                 borderBottomColor: '#6A4029',
                 marginBottom: 10,
               }}>
-              <Text style={styles.textPhone}>{profile.phone_number}</Text>
+              <Text style={styles.textPhone}>{profile[0].phone_number}</Text>
             </View>
-            <Text style={styles.address}>{profile.delivery_address}</Text>
+            <Text style={styles.address}>{profile[0].delivery_address}</Text>
           </View>
         </View>
         <View style={{marginTop: 25}}>

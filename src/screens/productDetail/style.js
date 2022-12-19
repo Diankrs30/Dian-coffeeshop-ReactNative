@@ -4,6 +4,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -89,9 +94,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 14,
   },
+  inputCount: {
+    width: 40,
+    textAlign: 'center',
+    fontSize: 17,
+    flex: 1,
+  },
   btnCounter: {
-    borderWidth: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   wrapperCounter: {
     flexDirection: 'row',
@@ -101,6 +114,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 70,
     borderRadius: 20,
+    height: 50,
+    backgroundColor: '#FFBA33',
   },
 });
 

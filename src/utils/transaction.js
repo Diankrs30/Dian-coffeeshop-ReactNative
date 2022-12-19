@@ -17,7 +17,7 @@ export const createTransaction = (body, token) => {
 export const getHistory = (param, token) => {
   const queryParam = {
     page: param.page ?? '1',
-    limit: param.limit ?? '10',
+    limit: param.limit ?? '5',
   };
   const URL =
     HOST +

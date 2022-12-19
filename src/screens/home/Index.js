@@ -3,6 +3,7 @@ import styles from './style';
 import Drawer from '../../component/drawer/Index';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
 import {
   View,
   Text,
@@ -10,6 +11,8 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
+  Pressable,
 } from 'react-native';
 
 import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
@@ -20,8 +23,16 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const allProduct = useSelector(state => state.product.allProduct);
+  const isLoading = useSelector(state => state.product.isLoading);
   const [selectProduct, setSelectProduct] = useState('');
-  // const [param, setParam] = useState('');
+  const [search, setSearch] = useState('');
+  const [querys, setQuerys] = useState({
+    order: '',
+    sort: '',
+    category: '',
+    page: 1,
+    limit: 6,
+  });
 
   const rupiah = number => {
     return `IDR ${number
@@ -29,33 +40,87 @@ const Home = () => {
       .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')}`;
   };
 
-  // const getAllProduct = () => {
-  //   const queryParam = {
-  //     page: 1,
-  //     limit: 6,
-  //   };
-  //   dispatch(productAction.getAllProductThunk(queryParam));
-  // };
-
   const toProductDetail = item => {
-    console.log('first', item);
     setSelectProduct(item.id);
     navigation.navigate('Product Detail', {
       id: item.id,
     });
   };
 
+  const handleCofee = () => {
+    const param = {
+      order: '',
+      sort: '',
+      category: 'Coffee',
+      page: 1,
+      limit: 6,
+    };
+    setQuerys({...querys, ...param});
+    dispatch(productAction.getAllProductThunk(param));
+  };
+  const handleNonCofee = () => {
+    const param = {
+      order: '',
+      sort: '',
+      category: 'Non Coffee',
+      page: 1,
+      limit: 6,
+    };
+    setQuerys({...querys, ...param});
+    dispatch(productAction.getAllProductThunk(param));
+  };
+  const handleFood = () => {
+    const param = {
+      order: '',
+      sort: '',
+      category: 'Food',
+      page: 1,
+      limit: 6,
+    };
+    setQuerys({...querys, ...param});
+    dispatch(productAction.getAllProductThunk(param));
+  };
+
+  const handleFavorite = () => {
+    const param = {
+      sort: 'total_selling',
+      order: 'desc',
+      category: '',
+      page: 1,
+      limit: 6,
+    };
+    setQuerys({...querys, ...param});
+    dispatch(productAction.getAllProductThunk(param));
+  };
+
+  const handlersearch = text => {
+    setSearch(text);
+  };
+
+  const handlePresSearch = () => {
+    const param = {
+      search,
+      page: 1,
+      limit: 6,
+    };
+    dispatch(productAction.getAllProductThunk(param));
+  };
+
   useEffect(() => {
-    // const getAllProduct = () => {
     const queryParam = {
       page: 1,
       limit: 6,
     };
     dispatch(productAction.getAllProductThunk(queryParam));
-    // };
-
-    // getAllProduct();
   }, [dispatch]);
+
+  const handleShowNotification = msg => {
+    PushNotification.localNotification({
+      channelId: 'local-notification',
+      title: 'Local Notification',
+      message: msg,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -63,22 +128,64 @@ const Home = () => {
         <ScrollView>
           <Text style={styles.title}>A good coffee is a good day</Text>
           <View style={styles.wrapperSearch}>
-            <FontAwesome icon={SolidIcons.search} style={styles.iconSearch} />
             <TextInput
               style={styles.textPlaceholder}
               placeholder="Search"
               placeholderTextColor="d#BCBABA"
-              // onChangeText={handlersearch}
+              onChangeText={handlersearch}
+            />
+            <FontAwesome
+              icon={SolidIcons.search}
+              style={styles.iconSearch}
+              onPress={handlePresSearch}
             />
           </View>
           <View style={styles.wrapperMenu}>
             <ScrollView horizontal={true} style={styles.sectionMenu}>
-              <Text style={styles.grey}>Favorite</Text>
-              <Text style={styles.grey}>Promo</Text>
-              <Text style={styles.grey}>Coffee</Text>
-              <Text style={styles.grey}>Non Coffee</Text>
-              <Text style={styles.grey}>Food</Text>
-              <Text style={styles.grey}>Add on</Text>
+              <TouchableOpacity>
+                <Text
+                  style={
+                    querys.sort === 'total_selling' ? styles.brown : styles.grey
+                  }
+                  onPress={handleFavorite}>
+                  Favorite
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.grey}>Promo</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={
+                    querys.category === 'Coffee' ? styles.brown : styles.grey
+                  }
+                  onPress={handleCofee}>
+                  Coffee
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={
+                    querys.category === 'Non Coffee'
+                      ? styles.brown
+                      : styles.grey
+                  }
+                  onPress={handleNonCofee}>
+                  Non Coffee
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={
+                    querys.category === 'Food' ? styles.brown : styles.grey
+                  }
+                  onPress={handleFood}>
+                  Food
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.grey}>Add on</Text>
+              </TouchableOpacity>
             </ScrollView>
             <Text
               style={styles.seeMore}
@@ -88,36 +195,48 @@ const Home = () => {
               See more
             </Text>
           </View>
-          <ScrollView horizontal={true} style={styles.wrapperCard}>
-            {allProduct.length > 0 &&
-              allProduct.map((item, idx) => (
-                <TouchableOpacity
-                  style={styles.card}
-                  onPress={() => toProductDetail(item)}>
-                  <View style={styles.wrapperImage}>
-                    <Image
-                      source={{
-                        uri:
-                          `${item.image}` !== null
-                            ? `${item.image}`
-                            : ImageDefault,
-                      }}
-                      style={styles.image}
-                    />
-                  </View>
-                  <View style={styles.wrapperProduct}>
-                    <Text style={styles.productName}>{item.product_name}</Text>
-                    <Text style={styles.productPrice}>
-                      {rupiah(item.price)}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            {/* {allProduct.length > 0 &&
-              allProduct.map((item, idx) => {
-                return <CardProduct key={idx} props={item} />;
-              })} */}
-          </ScrollView>
+          {isLoading ? (
+            <View style={styles.loading}>
+              <ActivityIndicator size={'large'} />
+            </View>
+          ) : (
+            <ScrollView horizontal={true} style={styles.wrapperCard}>
+              {allProduct.length > 0 &&
+                allProduct.map((item, idx) => (
+                  <TouchableOpacity
+                    style={styles.card}
+                    onPress={() => toProductDetail(item)}
+                    key={idx}>
+                    <View style={styles.wrapperImage}>
+                      <Image
+                        source={{
+                          uri:
+                            `${item.image}` !== null
+                              ? `${item.image}`
+                              : ImageDefault,
+                        }}
+                        style={styles.image}
+                      />
+                    </View>
+                    <View style={styles.wrapperProduct}>
+                      <Text style={styles.productName}>
+                        {item.product_name}
+                      </Text>
+                      <Text style={styles.productPrice}>
+                        {rupiah(item.price)}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+            </ScrollView>
+          )}
+          <Pressable
+            style={{width: 70, height: 70}}
+            onPress={() =>
+              handleShowNotification('Welcome to Dian Coffeeshop')
+            }>
+            <Text style={{fontSize: 18}}>Proceed payment</Text>
+          </Pressable>
         </ScrollView>
       </Drawer>
     </View>
