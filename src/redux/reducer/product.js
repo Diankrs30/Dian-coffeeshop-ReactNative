@@ -5,6 +5,7 @@ const initialState = {
   meta: {},
   detailProduct: {},
   size: [],
+  promo: [],
   isLoading: false,
   isError: false,
   isFulfilled: false,
@@ -18,6 +19,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
     getSize,
     editProduct,
     createProduct,
+    getAllPromo,
     pending,
     rejected,
     fulfilled,
@@ -140,6 +142,32 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isError: false,
         isFulfilled: true,
+      };
+
+    case getAllPromo + pending:
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case getAllPromo + rejected:
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case getAllPromo + fulfilled:
+      const newPromo = payload.data.data;
+      const pagePromo = payload.data.meta.page;
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        promo: pagePromo > 1 ? [...prevState.promo, ...newPromo] : newPromo,
       };
 
     default:

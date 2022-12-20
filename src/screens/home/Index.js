@@ -155,7 +155,10 @@ const Home = () => {
                   Favorite
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('HomeTab', {screen: 'All Promo'})
+                }>
                 <Text style={styles.grey}>Promo</Text>
               </TouchableOpacity>
               <TouchableOpacity>

@@ -45,3 +45,13 @@ export const createProduct = (body, token) => {
   console.log(URL);
   return axios.post(URL, body, config(token));
 };
+
+export const getPromo = param => {
+  const queryParam = {
+    search: param.search ?? '',
+    page: param.page ?? '1',
+    limit: param.limit ?? '6',
+  };
+  const URL = `${HOST}/promos/?search=${queryParam.search}&page=${queryParam.page}&limit=${queryParam.limit}`;
+  return axios.get(URL);
+};

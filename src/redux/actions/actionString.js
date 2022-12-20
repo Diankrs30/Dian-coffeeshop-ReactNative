@@ -23,6 +23,7 @@ const ACTION_STRING = {
   transactionReset: 'RESET_TRANSACTION',
   editProduct: 'EDIT_PRODUCT',
   createProduct: 'CREATE_PRODUCT',
+  getAllPromo: 'GET_ALL_PROMO',
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,
