@@ -12,7 +12,6 @@ const config = token => {
 };
 
 export const getAllProduct = param => {
-  console.log('<<<', param);
   const queryParam = {
     search: param.search ?? '',
     category: param.category ?? '',
@@ -34,4 +33,10 @@ export const getDetailProduct = (id, token) => {
 export const getSizeProduct = () => {
   const URL = `${HOST}/size_products`;
   return axios.get(URL);
+};
+
+export const editProduct = (body, id, token) => {
+  const URL = HOST + `/products/edit_products/${id}`;
+  console.log(URL);
+  return axios.patch(URL, body, config(token));
 };

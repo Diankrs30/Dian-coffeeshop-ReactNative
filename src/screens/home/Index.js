@@ -18,12 +18,15 @@ import {
 import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
 import productAction from '../../redux/actions/product';
 import ImageDefault from '../../assets/images/icon-food.png';
+import pencil from '../../assets/images/pencil.png';
+import authAction from '../../redux/actions/auth';
 
 const Home = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const allProduct = useSelector(state => state.product.allProduct);
   const isLoading = useSelector(state => state.product.isLoading);
+  const auth = useSelector(state => state.auth.userData);
   const [selectProduct, setSelectProduct] = useState('');
   const [search, setSearch] = useState('');
   const [querys, setQuerys] = useState({
@@ -42,6 +45,7 @@ const Home = () => {
 
   const toProductDetail = item => {
     setSelectProduct(item.id);
+    console.log('....', item.id);
     navigation.navigate('Product Detail', {
       id: item.id,
     });
@@ -217,6 +221,13 @@ const Home = () => {
                         }}
                         style={styles.image}
                       />
+                      {auth.role === 'admin' && (
+                        <Pressable
+                          style={styles.wrapperPencil}
+                          onPress={() => toProductDetail(item)}>
+                          <Image source={pencil} />
+                        </Pressable>
+                      )}
                     </View>
                     <View style={styles.wrapperProduct}>
                       <Text style={styles.productName}>

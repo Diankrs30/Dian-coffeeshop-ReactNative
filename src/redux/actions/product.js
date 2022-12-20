@@ -3,6 +3,7 @@ import {
   getAllProduct,
   getDetailProduct,
   getSizeProduct,
+  editProduct,
 } from '../../utils/product';
 
 const getAllProductPending = () => ({
@@ -47,6 +48,20 @@ const getSizeFulfilled = data => ({
   payload: {data},
 });
 
+const editProductPending = () => ({
+  type: ACTION_STRING.editProduct.concat(ACTION_STRING.pending),
+});
+
+const editProductRejected = error => ({
+  type: ACTION_STRING.editProduct.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const editProductFulfilled = data => ({
+  type: ACTION_STRING.editProduct.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
 const getAllProductThunk = param => {
   return async dispatch => {
     try {
@@ -86,10 +101,29 @@ const getSizeThunk = () => {
   };
 };
 
+const editProductThunk = (body, id, token, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(editProductPending());
+      const result = await editProduct(body, id, token);
+      dispatch(editProductFulfilled(result.data.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
+    } catch (error) {
+      dispatch(editProductRejected(error));
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
 const productAction = {
   getAllProductThunk,
   getDetailProductThunk,
   getSizeThunk,
+  editProductThunk,
 };
 
 export default productAction;

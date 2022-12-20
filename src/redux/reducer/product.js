@@ -3,7 +3,7 @@ import ACTION_STRING from '../actions/actionString';
 const initialState = {
   allProduct: [],
   meta: {},
-  detailProduct: [],
+  detailProduct: {},
   size: [],
   isLoading: false,
   isError: false,
@@ -16,6 +16,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
     getAllProduct,
     getDetailProduct,
     getSize,
+    editProduct,
     pending,
     rejected,
     fulfilled,
@@ -92,6 +93,29 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: false,
         isFulfilled: true,
         size: payload.data.data,
+      };
+    case editProduct + pending:
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case editProduct + rejected:
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case editProduct + fulfilled:
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        detailProduct: {...prevState.detailProduct, ...payload.data.data},
       };
 
     default:

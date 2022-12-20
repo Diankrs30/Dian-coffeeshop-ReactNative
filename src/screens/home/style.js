@@ -113,6 +113,16 @@ const styles = StyleSheet.create({
     color: '#6A4029',
     marginTop: 8,
   },
+  wrapperPencil: {
+    width: 40,
+    height: 40,
+    borderRadius: 150,
+    backgroundColor: '#6A4029',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -30,
+    marginLeft: 135,
+  },
 });
 
 export default styles;

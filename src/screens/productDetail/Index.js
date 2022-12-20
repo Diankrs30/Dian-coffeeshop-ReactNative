@@ -17,6 +17,7 @@ import styles from './style';
 import ImageDefault from '../../assets/images/icon-food.png';
 const cart = require('../../assets/images/shopCart.png');
 const back = require('../../assets/images/iconBack.png');
+const pencil = require('../../assets/images/pencil2.png');
 
 const ProductDetail = props => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const ProductDetail = props => {
   const carts = useSelector(state => state.transaction.product_item);
   const size = useSelector(state => state.product.size);
   const auth = useSelector(state => state.auth.userData);
+  const [selectProduct, setSelectProduct] = useState('');
   const [productItem, setProductItem] = useState({});
   const [counter, setCounter] = useState(1);
 
@@ -48,7 +50,7 @@ const ProductDetail = props => {
     const filter = carts.filter(
       item => item.products_id === detailProduct[0].id,
     );
-    console.log(filter);
+    // console.log(filter);
     if (filter?.length > 0) {
       return ToastAndroid.showWithGravity(
         'The product is already in the cart',
@@ -98,6 +100,13 @@ const ProductDetail = props => {
     });
   };
 
+  const toEditProduct = () => {
+    setSelectProduct(detailProduct[0].id);
+    navigation.navigate('Edit Product', {
+      id: detailProduct[0].id,
+    });
+  };
+
   useEffect(() => {
     const getDetailProduct = data => {
       setProductItem(product => {
@@ -121,12 +130,21 @@ const ProductDetail = props => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={back} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Cart');
-          }}>
-          <Image source={cart} />
-        </TouchableOpacity>
+        {auth.role === 'admin' ? (
+          <TouchableOpacity
+            onPress={() => {
+              toEditProduct(detailProduct.id);
+            }}>
+            <Image source={pencil} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Cart');
+            }}>
+            <Image source={cart} />
+          </TouchableOpacity>
+        )}
       </View>
       {isPending ? (
         <View style={styles.loading}>

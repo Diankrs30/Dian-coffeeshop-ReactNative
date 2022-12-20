@@ -32,7 +32,6 @@ function Navbar({children}) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const profile = useSelector(state => state.user.profile);
-  console.log(profile);
   const auth = useSelector(state => state.auth.userData);
   const [modalVisible, setModalVisible] = useState(false);
   // const [openDrawer, setOpenDrawer] = useState(false);
@@ -63,9 +62,12 @@ function Navbar({children}) {
           <View style={styles.continerSwipe}>
             <Image
               source={{
-                uri: profile[0].image !== null ? profile[0].image : DefaultImg,
+                uri:
+                  `${profile[0].image}` !== null
+                    ? `${profile[0].image}`
+                    : DefaultImg,
               }}
-              // source={DefaultImg}
+              // source={profile[0].image}
               style={styles.imageDrawer}
             />
             <Text style={styles.username}>{profile[0].display_name}</Text>
@@ -99,7 +101,11 @@ function Navbar({children}) {
             <Divider style={styles.devider} />
             <View style={styles.containerBottom}>
               <Image source={IconPolicy} style={styles.imageBottom} />
-              <Text style={styles.textBottom}>Privacy policy</Text>
+              {auth.role === 'user' ? (
+                <Text style={styles.textBottom}>Privacy policy</Text>
+              ) : (
+                <Text style={styles.textBottom}>Sales report</Text>
+              )}
             </View>
             <Divider style={styles.devider} />
             <View style={styles.containerBottom}>

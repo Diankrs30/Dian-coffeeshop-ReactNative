@@ -89,7 +89,7 @@ const EditProfile = () => {
       });
     }
 
-    console.log('bodies', bodies);
+    // console.log('bodies', bodies);
 
     dispatch(
       userAction.editProfileThunk(bodies, token, updateSuccess, updateDenied),

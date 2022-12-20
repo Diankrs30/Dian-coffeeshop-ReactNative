@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     width: 142,
     height: 152,
+    backgroundColor: '#dfdfdf',
   },
   username: {
     fontFamily: 'Poppins-SemiBold',
