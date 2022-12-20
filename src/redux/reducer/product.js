@@ -17,6 +17,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
     getDetailProduct,
     getSize,
     editProduct,
+    createProduct,
     pending,
     rejected,
     fulfilled,
@@ -116,6 +117,29 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: false,
         isFulfilled: true,
         detailProduct: {...prevState.detailProduct, ...payload.data.data},
+      };
+
+    case createProduct + pending:
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case createProduct + rejected:
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case createProduct + fulfilled:
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
       };
 
     default:

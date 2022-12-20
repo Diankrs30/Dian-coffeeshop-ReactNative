@@ -27,11 +27,9 @@ const ProductDetail = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const id = props.route.params.id;
-  console.log(id);
   const detailProduct = useSelector(state => state.product.detailProduct);
   const isPending = useSelector(state => state.product.isLoading);
   const token = useSelector(state => state.auth.userData.token);
-  console.log(token);
 
   const [modal, setModalVisible] = useState(false);
 
@@ -117,19 +115,15 @@ const ProductDetail = props => {
     if (category !== detailProduct[0].category_id) {
       bodies.append('category_id', category);
     }
-    console.log(category);
     if (body?.product_name) {
       bodies.append('product_name', body.product_name);
     }
-    console.log(body.product_name);
     if (body?.product_description) {
       bodies.append('product_description', body.product_description);
     }
-    console.log(body.product_description);
     if (body?.price) {
       bodies.append('price', body.price);
     }
-    console.log(body.price);
     if (file) {
       bodies.append('image', {
         name: 'test.' + file[0]?.type?.substr(6),
@@ -141,7 +135,6 @@ const ProductDetail = props => {
     if (body?.stock_product) {
       bodies.append('stock_product', body.stock_product);
     }
-    console.log(body.stock_product);
 
     dispatch(
       productAction.editProductThunk(

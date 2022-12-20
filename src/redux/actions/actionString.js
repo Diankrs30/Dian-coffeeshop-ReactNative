@@ -22,6 +22,7 @@ const ACTION_STRING = {
   userReset: 'RESET_USER',
   transactionReset: 'RESET_TRANSACTION',
   editProduct: 'EDIT_PRODUCT',
+  createProduct: 'CREATE_PRODUCT',
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,

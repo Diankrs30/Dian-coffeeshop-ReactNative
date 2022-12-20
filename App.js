@@ -24,6 +24,7 @@ import Payment from './src/screens/payment/Index';
 import EditProfile from './src/screens/editProfile/Index';
 import Splashscreen from './src/screens/splash/Index.js';
 import EditProduct from './src/screens/editProduct/Index';
+import CreateProduct from './src/screens/createProduct/Index';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const iconHome = require('./src/assets/images/home.png');
@@ -125,6 +126,11 @@ const HomeTab = () => (
     <Stack.Screen
       name="Payment"
       component={Payment}
+      screenOptions={{headerShown: true}}
+    />
+    <Stack.Screen
+      name="Create Product"
+      component={CreateProduct}
       screenOptions={{headerShown: true}}
     />
     <Stack.Screen

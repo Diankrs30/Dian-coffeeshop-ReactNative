@@ -248,6 +248,15 @@ const Home = () => {
             }>
             <Text style={{fontSize: 18}}>Proceed payment</Text>
           </Pressable> */}
+          {auth.role === 'admin' && (
+            <TouchableOpacity
+              style={styles.btnAddProd}
+              onPress={() =>
+                navigation.navigate('HomeTab', {screen: 'Create Product'})
+              }>
+              <Text style={styles.textBtnAddProd}>Add Product</Text>
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </Drawer>
     </View>

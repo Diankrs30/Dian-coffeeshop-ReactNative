@@ -37,6 +37,11 @@ export const getSizeProduct = () => {
 
 export const editProduct = (body, id, token) => {
   const URL = HOST + `/products/edit_products/${id}`;
-  console.log(URL);
   return axios.patch(URL, body, config(token));
+};
+
+export const createProduct = (body, token) => {
+  const URL = HOST + '/products/create_product';
+  console.log(URL);
+  return axios.post(URL, body, config(token));
 };

@@ -22,7 +22,7 @@ import IconCart from '../../assets/images/cart.png';
 import IconMenu from '../../assets/images/menu.png';
 import IconSecurity from '../../assets/images/security.png';
 import IconPolicy from '../../assets/images/policy.png';
-import DefaultImg from '../../assets/images/default-img.png';
+// import DefaultImg from '../../assets/images/default-img.png';
 import Hambuger from '../../assets/images/hamburger.png';
 import ShoppingCart from '../../assets/images/shopping-cart.png';
 import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
@@ -61,13 +61,13 @@ function Navbar({children}) {
         {profile.length > 0 && (
           <View style={styles.continerSwipe}>
             <Image
-              source={{
-                uri:
-                  `${profile[0].image}` !== null
-                    ? `${profile[0].image}`
-                    : DefaultImg,
-              }}
-              // source={profile[0].image}
+              // source={{
+              //   uri:
+              //     `${profile[0].image}` !== null
+              //       ? `${profile[0].image}`
+              //       : DefaultImg,
+              // }}
+              source={profile[0].image}
               style={styles.imageDrawer}
             />
             <Text style={styles.username}>{profile[0].display_name}</Text>

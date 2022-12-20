@@ -123,6 +123,20 @@ const styles = StyleSheet.create({
     marginTop: -30,
     marginLeft: 135,
   },
+  btnAddProd: {
+    alignItems: 'center',
+    backgroundColor: '#6A4029',
+    padding: 20,
+    borderRadius: 20,
+    justifyContent: 'center',
+    marginHorizontal: 31,
+    marginTop: 50,
+  },
+  textBtnAddProd: {
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 17,
+  },
 });
 
 export default styles;
