@@ -1,3 +1,4 @@
+import {fonts} from '@rneui/themed/dist/config';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -13,9 +14,44 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 10,
   },
+  textHeader: {
+    fontFamily: 'Poppins-ExtraBold',
+    fontSize: 18,
+    color: '#000',
+    textAlign: 'center',
+  },
   containerContent: {
     paddingHorizontal: 50,
     marginTop: 30,
+  },
+  containerEmpty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: 'Poppins-ExtraBold',
+    fontSize: 28,
+    color: '#000',
+  },
+  decsEmpty: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 17,
+    paddingHorizontal: 70,
+    textAlign: 'center',
+  },
+  btnOrder: {
+    paddingHorizontal: 50,
+    height: 70,
+    borderRadius: 20,
+    backgroundColor: '#6A4029',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textBtnOrder: {
+    fontFamily: 'Poppins-ExtraBold',
+    fontSize: 17,
+    color: '#fff',
   },
   textTitle: {
     fontFamily: 'Poppins-ExtraBold',
@@ -85,7 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   inputCount: {
-    width: 60,
+    width: 40,
     textAlign: 'center',
     fontSize: 12,
   },

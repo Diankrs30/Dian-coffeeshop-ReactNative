@@ -37,7 +37,6 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         error: payload.error.response.data,
       };
     case getDetailProduct + fulfilled:
-      console.log('reducer', payload.data.data);
       return {
         ...prevState,
         isLoading: false,

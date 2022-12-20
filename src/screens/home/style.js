@@ -45,6 +45,13 @@ const styles = StyleSheet.create({
     color: '#9A9A9D',
     marginRight: 29,
   },
+  brown: {
+    fontFamily: 'Poppins-Bold',
+    textDecorationLine: 'underline',
+    fontSize: 17,
+    color: '#6A4029',
+    marginRight: 29,
+  },
   seeMore: {
     fontFamily: 'Poppins-Regular',
     fontSize: 15,

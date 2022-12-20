@@ -2,7 +2,6 @@ import ACTION_STRING from '../actions/actionString';
 
 const intialState = {
   product_item: [],
-  product_item_view: [],
   subtotal: null,
   tax_and_fee: null,
   shipping_cost: null,
@@ -15,15 +14,13 @@ const intialState = {
 };
 
 const updateCartReducer = (prevState = intialState, {type, payload}) => {
-  const {updateCart} = ACTION_STRING;
+  const {updateCart, resetUpdateCart} = ACTION_STRING;
   switch (type) {
     case updateCart:
-      console.log('nnnnnnn', payload);
       return {
         ...prevState,
         product_item: payload.data.product_item,
-        product_item_view: payload.data.product_item_view,
-        sub_total: payload.data.sub_total,
+        subtotal: payload.data.subtotal,
         tax_and_fee: payload.data.tax_and_fee,
         shipping_cost: payload.data.shipping_cost,
         address_detail: payload.data.address_detail,
@@ -33,6 +30,9 @@ const updateCartReducer = (prevState = intialState, {type, payload}) => {
         set_time: payload.data.set_time,
         status_order: payload.data.status_order,
       };
+
+    case resetUpdateCart:
+      return intialState;
 
     default:
       return prevState;

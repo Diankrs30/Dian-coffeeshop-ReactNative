@@ -59,12 +59,15 @@ const getAllProductThunk = param => {
   };
 };
 
-const getDetailProductThunk = (id, token) => {
+const getDetailProductThunk = (id, token, cbSuccess) => {
   return async dispatch => {
     try {
       dispatch(getDetailProductPending());
       const result = await getDetailProduct(id, token);
       dispatch(getDetailProductFulfilled(result.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess(result.data.data);
+      }
     } catch (error) {
       dispatch(getDetailProductRejected(error));
     }

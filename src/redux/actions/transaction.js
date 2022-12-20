@@ -29,14 +29,21 @@ const getHistoryFulfilled = data => ({
   payload: {data},
 });
 
-const createTransactionThunk = (body, token) => {
+const createTransactionThunk = (body, token, cbSuccess, cbDenied) => {
   return async dispatch => {
     try {
       dispatch(createTransactionPending());
       const result = await createTransaction(body, token);
-      dispatch(createTransactionFulfilled(result.data));
+      dispatch(createTransactionFulfilled(result.data.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
     } catch (error) {
       dispatch(createTransactionRejected(error));
+      console.log(error);
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
     }
   };
 };
@@ -54,10 +61,21 @@ const getHistoryThunk = (param, token) => {
 };
 
 const cart = data => {
-  // console.log('create card', data);
   return {
     type: ACTION_STRING.createCart,
     payload: {data},
+  };
+};
+
+const cartReset = () => {
+  return {
+    type: ACTION_STRING.resetCart,
+  };
+};
+
+const resetTransaction = () => {
+  return {
+    type: ACTION_STRING.transactionReset,
   };
 };
 
@@ -65,6 +83,8 @@ const transactionAction = {
   createTransactionThunk,
   getHistoryThunk,
   cart,
+  cartReset,
+  resetTransaction,
 };
 
 export default transactionAction;

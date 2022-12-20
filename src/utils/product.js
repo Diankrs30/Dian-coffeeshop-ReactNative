@@ -1,6 +1,7 @@
 import axios from 'axios';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// const HOST = 'https://dian-coffeshop.vercel.app/dian-coffeeshop';
 const HOST = process.env.API_URL;
 const config = token => {
   return {

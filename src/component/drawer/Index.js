@@ -26,19 +26,20 @@ import DefaultImg from '../../assets/images/default-img.png';
 import Hambuger from '../../assets/images/hamburger.png';
 import ShoppingCart from '../../assets/images/shopping-cart.png';
 import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
+import {clearState} from '../../helper/clearState';
 
 function Navbar({children}) {
   const dispatch = useDispatch();
-  const profile = useSelector(state => state.user.profile[0]);
+  const navigation = useNavigation();
+  const profile = useSelector(state => state.user.profile);
   console.log(profile);
   const auth = useSelector(state => state.auth.userData);
-
   const [modalVisible, setModalVisible] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const navigation = useNavigation();
+  // const [openDrawer, setOpenDrawer] = useState(false);
 
   const logoutHandler = () => {
     const LogoutSuccess = () => {
+      clearState(dispatch);
       navigation.navigate('Welcome');
     };
     const LogoutError = error => {
@@ -58,31 +59,43 @@ function Navbar({children}) {
   const renderDrawer = () => {
     return (
       <View>
-        <View style={styles.continerSwipe}>
-          <Image
-            source={{uri: profile.image !== null ? profile.image : DefaultImg}}
-            // source={DefaultImg}
-            style={styles.imageDrawer}
-          />
-          <Text style={styles.username}>{profile.display_name}</Text>
-          <Text style={styles.email}>{profile.email}</Text>
-        </View>
+        {profile.length > 0 && (
+          <View style={styles.continerSwipe}>
+            <Image
+              source={{
+                uri: profile[0].image !== null ? profile[0].image : DefaultImg,
+              }}
+              // source={DefaultImg}
+              style={styles.imageDrawer}
+            />
+            <Text style={styles.username}>{profile[0].display_name}</Text>
+            <Text style={styles.email}>{profile[0].email}</Text>
+          </View>
+        )}
         <View style={styles.content}>
           <View>
-            <View style={styles.containerBottom}>
+            <Pressable
+              style={styles.containerBottom}
+              onPress={() =>
+                navigation.navigate('ProfileTab', {screen: 'Edit Profile'})
+              }>
               <Image source={IconProfile} style={styles.imageBottom} />
               <Text style={styles.textBottom}>Edit Profile</Text>
-            </View>
+            </Pressable>
             <Divider style={styles.devider} />
             <View style={styles.containerBottom}>
               <Image source={IconCart} style={styles.imageBottom} />
               <Text style={styles.textBottom}>Orders</Text>
             </View>
             <Divider style={styles.devider} />
-            <View style={styles.containerBottom}>
+            <Pressable
+              style={styles.containerBottom}
+              onPress={() =>
+                navigation.navigate('HomeTab', {screen: 'Screen Favorite'})
+              }>
               <Image source={IconMenu} style={styles.imageBottom} />
               <Text style={styles.textBottom}>All menu</Text>
-            </View>
+            </Pressable>
             <Divider style={styles.devider} />
             <View style={styles.containerBottom}>
               <Image source={IconPolicy} style={styles.imageBottom} />
@@ -149,12 +162,14 @@ function Navbar({children}) {
         drawerContainerStyle={{borderTopRightRadius: 30}}
         renderNavigationView={renderDrawer}>
         <View style={styles.header}>
-          <View>
+          <Pressable
+          // onPress={() => DrawerLayout.current.openDrawer(true)}
+          >
             <Image source={Hambuger} />
-          </View>
-          <View>
+          </Pressable>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
             <Image source={ShoppingCart} />
-          </View>
+          </TouchableOpacity>
         </View>
         {children}
       </DrawerLayout>

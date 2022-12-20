@@ -14,7 +14,7 @@ const CardProduct = props => {
     <View style={styles.card}>
       <View style={styles.wrapperImage}>
         <Image
-          source={props.image !== null ? props.image : ImageDefault}
+          source={{uri: props.image !== null ? props.image : ImageDefault}}
           style={styles.image}
         />
       </View>

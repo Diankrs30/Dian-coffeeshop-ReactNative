@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import bg from '../../assets/images/bg-welcomepage.png';
 import styles from './style';
+import {useSelector} from 'react-redux';
 
 const Welcome = () => {
   const navigation = useNavigation();
+  const auth = useSelector(state => state.auth);
 
   const onPressSignUp = () => {
     navigation.navigate('SignUp');
@@ -14,6 +16,13 @@ const Welcome = () => {
   const onPressLogin = () => {
     navigation.navigate('Login');
   };
+
+  useEffect(() => {
+    if (auth.userData.token) {
+      navigation.navigate('Home');
+    }
+  }, [auth, navigation]);
+
   return (
     <View style={styles.container}>
       <ImageBackground source={bg} resizeMode="cover" style={styles.bg}>
