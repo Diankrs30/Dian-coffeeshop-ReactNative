@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751547029627",
+    "project_id": "rn-diancoffeeshop",
+    "storage_bucket": "rn-diancoffeeshop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751547029627:android:3e792f06b066a51e8aaade",
+        "android_client_info": {
+          "package_name": "com.diancoffeeshoprn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751547029627-3jkdtlgj752hv1e39nkoi5knatjtbuig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvsyNocfhrisoc6_6hrV1ZRHcY_uodJKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751547029627-3jkdtlgj752hv1e39nkoi5knatjtbuig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
