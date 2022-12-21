@@ -24,6 +24,7 @@ import productAction from '../../redux/actions/product';
 
 const back = require('../../assets/images/iconBack.png');
 import ImageDefault from '../../assets/images/icon-food.png';
+import pencil from '../../assets/images/pencil.png';
 // import debounce from 'lodash.debounce';
 
 function AllPromo() {
@@ -33,6 +34,7 @@ function AllPromo() {
   const promo = useSelector(state => state.product.promo);
   const isLoading = useSelector(state => state.product.isLoading);
   const pagination = useSelector(state => state.product.meta);
+  const auth = useSelector(state => state.auth.userData);
 
   const [selectPromo, setSelectPromo] = useState('');
   const [search, setSearch] = useState('');
@@ -60,10 +62,10 @@ function AllPromo() {
     dispatch(productAction.getAllPromoThunk(param));
   };
 
-  const toPromoDetail = item => {
+  const toEditPromo = item => {
     setSelectPromo(item.id);
     console.log('....', item.id);
-    navigation.navigate('Detail Promo', {
+    navigation.navigate('Edit Promo', {
       id: item.id,
     });
   };
@@ -168,8 +170,7 @@ function AllPromo() {
                       paddingLeft: 25,
                       paddingRight: 25,
                       marginVertical: 10,
-                    }}
-                    onPress={() => toPromoDetail(item)}>
+                    }}>
                     <View
                       style={{
                         backgroundColor: '#F5C361',
@@ -181,12 +182,17 @@ function AllPromo() {
                       }}>
                       <View>
                         <Image
-                          source={{
-                            uri:
-                              `${item.image}` !== null
-                                ? `${item.image}`
-                                : ImageDefault,
-                          }}
+                          // source={{
+                          //   uri:
+                          //     `${item.image}` !== null
+                          //       ? `${item.image}`
+                          //       : ImageDefault,
+                          // }}
+                          source={
+                            `${item.image}`
+                              ? {uri: `${item.image}`}
+                              : ImageDefault
+                          }
                           style={styles.imageCard}
                         />
                       </View>
@@ -201,6 +207,13 @@ function AllPromo() {
                         </Text>
                       </View>
                     </View>
+                    {auth.role === 'admin' && (
+                      <Pressable
+                        style={styles.wrapperPencil}
+                        onPress={() => toEditPromo(item)}>
+                        <Image source={pencil} />
+                      </Pressable>
+                    )}
                   </TouchableOpacity>
                 </View>
               );

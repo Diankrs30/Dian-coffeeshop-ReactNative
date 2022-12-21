@@ -26,7 +26,7 @@ import Splashscreen from './src/screens/splash/Index.js';
 import EditProduct from './src/screens/editProduct/Index';
 import CreateProduct from './src/screens/createProduct/Index';
 import AllPromo from './src/screens/promo/Index';
-import DetailPromo from './src/screens/detailPromo/Index';
+import CreatePromo from './src/screens/createPromo/Index';
 import EditPromo from './src/screens/editPomo/Index';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -147,8 +147,8 @@ const HomeTab = () => (
       screenOptions={{headerShown: true}}
     />
     <Stack.Screen
-      name="Detail Promo"
-      component={DetailPromo}
+      name="Create Promo"
+      component={CreatePromo}
       screenOptions={{headerShown: true}}
     />
     <Stack.Screen

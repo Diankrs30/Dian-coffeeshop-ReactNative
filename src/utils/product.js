@@ -1,7 +1,5 @@
 import axios from 'axios';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// const HOST = 'https://dian-coffeshop.vercel.app/dian-coffeeshop';
 const HOST = process.env.API_URL;
 const config = token => {
   return {
@@ -59,4 +57,14 @@ export const getPromo = param => {
 export const getPromoById = (id, token) => {
   const URL = HOST + `//promos/detail_promo/${id}`;
   return axios.get(URL, config(token));
+};
+
+export const editPromo = (body, id, token) => {
+  const URL = HOST + `/promos/edit_promo/${id}`;
+  return axios.patch(URL, body, config(token));
+};
+
+export const createPromo = (body, token) => {
+  const URL = HOST + '/promos/create_promo';
+  return axios.post(URL, body, config(token));
 };

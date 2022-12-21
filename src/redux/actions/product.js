@@ -7,6 +7,8 @@ import {
   createProduct,
   getPromo,
   getPromoById,
+  editPromo,
+  createPromo,
 } from '../../utils/product';
 
 const getAllProductPending = () => ({
@@ -104,6 +106,34 @@ const getDetailPromoRejected = error => ({
 
 const getDetailPromoFulfilled = data => ({
   type: ACTION_STRING.detailPromo.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
+const editPromoPending = () => ({
+  type: ACTION_STRING.editPromo.concat(ACTION_STRING.pending),
+});
+
+const editPromoRejected = error => ({
+  type: ACTION_STRING.editPromo.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const editPromoFulfilled = data => ({
+  type: ACTION_STRING.editPromo.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
+const createPromoPending = () => ({
+  type: ACTION_STRING.createPromo.concat(ACTION_STRING.pending),
+});
+
+const createPromoRejected = error => ({
+  type: ACTION_STRING.createPromo.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const createPromoFulfilled = data => ({
+  type: ACTION_STRING.createPromo.concat(ACTION_STRING.fulfilled),
   payload: {data},
 });
 
@@ -212,6 +242,43 @@ const getDetailPromoThunk = (id, token) => {
   };
 };
 
+const editPromoThunk = (body, id, token, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(editPromoPending());
+      const result = await editPromo(body, id, token);
+      dispatch(editPromoFulfilled(result.data.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
+    } catch (error) {
+      dispatch(editPromoRejected(error));
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
+const createPromoThunk = (body, token, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(createPromoPending());
+      const result = await createPromo(body, token);
+      dispatch(createPromoFulfilled(result.data.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
+    } catch (error) {
+      dispatch(createPromoRejected(error));
+      console.log(error);
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
 const productAction = {
   getAllProductThunk,
   getDetailProductThunk,
@@ -220,6 +287,8 @@ const productAction = {
   createProductThunk,
   getAllPromoThunk,
   getDetailPromoThunk,
+  editPromoThunk,
+  createPromoThunk,
 };
 
 export default productAction;

@@ -23,19 +23,20 @@ import calendar from '../../assets/images/calendar.png';
 const back = require('../../assets/images/iconBack.png');
 const trash = require('../../assets/images/trash.png');
 
-function EditPromo(props) {
+function CreatePromo() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const id = props.route.params.id;
   const promo = useSelector(state => state.product.detailPromo);
   const token = useSelector(state => state.auth.userData.token);
   const isLoading = useSelector(state => state.product.isLoading);
+  const product = useSelector(state => state.product.allProduct);
   const [body, setBody] = useState({});
   const [file, setFile] = useState();
   const [updateDateStart, setUpdateDateStart] = useState('');
   const [updateDateEnd, setUpdateDateEnd] = useState('');
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState([]);
 
   const changeHandler = (text, name) => {
     setBody(body => ({...body, [name]: text}));
@@ -43,8 +44,8 @@ function EditPromo(props) {
 
   const dateHandler = date => new Date(date).toLocaleDateString();
 
-  const editPromoHandler = () => {
-    const updateSuccess = () => {
+  const createPromoHandler = () => {
+    const createSuccess = () => {
       ToastAndroid.showWithGravity(
         'Data changed successfully',
         ToastAndroid.SHORT,
@@ -52,7 +53,7 @@ function EditPromo(props) {
         navigation.navigate('All Promo'),
       );
     };
-    const updateDenied = error => {
+    const createDenied = error => {
       ToastAndroid.showWithGravity(
         `${error}`,
         ToastAndroid.SHORT,
@@ -92,12 +93,11 @@ function EditPromo(props) {
     console.log(body);
 
     dispatch(
-      productAction.editPromoThunk(
+      productAction.createPromoThunk(
         bodies,
-        id,
         token,
-        updateSuccess,
-        updateDenied,
+        createSuccess,
+        createDenied,
       ),
     );
   };
@@ -148,9 +148,9 @@ function EditPromo(props) {
     });
   };
 
-  useEffect(() => {
-    dispatch(productAction.getDetailPromoThunk(id, token));
-  }, [dispatch, token, id]);
+  // useEffect(() => {
+  //   dispatch(productAction.getDetailPromoThunk(token));
+  // }, [dispatch, token]);
 
   return (
     <>
@@ -159,7 +159,7 @@ function EditPromo(props) {
           <Image source={back} />
         </TouchableOpacity>
         <View style={{justifyContent: 'center', flex: 1}}>
-          <Text style={styles.textHeader}>Edit Promo</Text>
+          <Text style={styles.textHeader}>New Promo</Text>
         </View>
         <TouchableOpacity style={styles.iconTrash}>
           <Image source={trash} />
@@ -239,9 +239,7 @@ function EditPromo(props) {
               <Text style={styles.text}>Promo Name</Text>
               <TextInput
                 style={styles.input_bottom}
-                placeholder={
-                  promo[0].promo_name || 'Type promo name max. 30 characters'
-                }
+                placeholder={'Type promo name max. 30 characters'}
                 keyboardType="none"
                 placeholderTextColor="#000"
                 onChangeText={text => changeHandler(text, 'promo_name')}
@@ -249,9 +247,7 @@ function EditPromo(props) {
               <Text style={styles.text}>Discount</Text>
               <TextInput
                 style={styles.input_bottom}
-                placeholder={
-                  promo[0].discount.toString() || 'Type Discount Percentage'
-                }
+                placeholder={'Type Discount Percentage'}
                 keyboardType="numeric"
                 placeholderTextColor="#000"
                 onChangeText={num => changeHandler(parseInt(num), 'discount')}
@@ -259,7 +255,7 @@ function EditPromo(props) {
               <Text style={styles.text}>Promo Code</Text>
               <TextInput
                 style={styles.input_bottom}
-                placeholder={promo[0].code_promo || 'Type Promo Code'}
+                placeholder={'Type Promo Code'}
                 keyboardType="none"
                 placeholderTextColor="#000"
                 onChangeText={text => changeHandler(text, 'code_promo')}
@@ -353,18 +349,16 @@ function EditPromo(props) {
               <Text style={styles.text}>Description</Text>
               <TextInput
                 style={styles.input_bottom}
-                placeholder={
-                  promo[0].promo_description ||
-                  'Describe your promo max. 150 characters'
-                }
+                placeholder={'Describe your promo max. 150 characters'}
                 keyboardType="none"
                 placeholderTextColor="#000"
                 onChangeText={text => changeHandler(text, 'promo_description')}
               />
+
               <View>
                 <TouchableOpacity
                   style={styles.btnSave}
-                  onPress={editPromoHandler}>
+                  onPress={createPromoHandler}>
                   {isLoading ? (
                     <ActivityIndicator size="large" color="white" />
                   ) : (
@@ -380,4 +374,4 @@ function EditPromo(props) {
   );
 }
 
-export default EditPromo;
+export default CreatePromo;

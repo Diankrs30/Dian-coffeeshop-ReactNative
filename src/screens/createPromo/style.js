@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     outlineWidth: 4,
-    padding: 10,
+    // padding: 10,
     width: '90%',
     color: 'black',
     fontWeight: '400',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 40,
     marginBottom: 20,
   },
   textBtnSave: {

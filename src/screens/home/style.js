@@ -132,6 +132,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 31,
     marginTop: 50,
   },
+  btnAddPromo: {
+    alignItems: 'center',
+    backgroundColor: '#6A4029',
+    padding: 20,
+    borderRadius: 20,
+    justifyContent: 'center',
+    marginHorizontal: 31,
+    marginTop: 30,
+  },
   textBtnAddProd: {
     color: '#fff',
     fontFamily: 'Poppins-Bold',

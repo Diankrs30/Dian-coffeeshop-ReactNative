@@ -118,14 +118,6 @@ const Home = () => {
     dispatch(productAction.getAllProductThunk(queryParam));
   }, [dispatch]);
 
-  // const handleShowNotification = msg => {
-  //   PushNotification.localNotification({
-  //     channelId: 'local-notification',
-  //     title: 'Local Notification',
-  //     message: msg,
-  //   });
-  // };
-
   return (
     <View style={styles.container}>
       <Drawer>
@@ -244,21 +236,23 @@ const Home = () => {
                 ))}
             </ScrollView>
           )}
-          {/* <Pressable
-            style={{width: 70, height: 70}}
-            onPress={() =>
-              handleShowNotification('Welcome to Dian Coffeeshop')
-            }>
-            <Text style={{fontSize: 18}}>Proceed payment</Text>
-          </Pressable> */}
           {auth.role === 'admin' && (
-            <TouchableOpacity
-              style={styles.btnAddProd}
-              onPress={() =>
-                navigation.navigate('HomeTab', {screen: 'Create Product'})
-              }>
-              <Text style={styles.textBtnAddProd}>Add Product</Text>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity
+                style={styles.btnAddProd}
+                onPress={() =>
+                  navigation.navigate('HomeTab', {screen: 'Create Product'})
+                }>
+                <Text style={styles.textBtnAddProd}>Add Product</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btnAddPromo}
+                onPress={() =>
+                  navigation.navigate('HomeTab', {screen: 'Create Promo'})
+                }>
+                <Text style={styles.textBtnAddProd}>Add Promo</Text>
+              </TouchableOpacity>
+            </View>
           )}
         </ScrollView>
       </Drawer>

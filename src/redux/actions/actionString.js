@@ -25,6 +25,8 @@ const ACTION_STRING = {
   createProduct: 'CREATE_PRODUCT',
   getAllPromo: 'GET_ALL_PROMO',
   detailPromo: 'GET_DETAIL_PROMO',
+  editPromo: 'EDIT_PROMO',
+  createPromo: 'CREATE_PROMO',
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,

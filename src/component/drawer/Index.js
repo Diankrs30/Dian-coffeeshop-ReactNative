@@ -171,7 +171,8 @@ function Navbar({children}) {
           >
             <Image source={Hambuger} />
           </Pressable>
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('HomeTab', {screen: 'Cart'})}>
             <Image source={ShoppingCart} />
           </TouchableOpacity>
         </View>
