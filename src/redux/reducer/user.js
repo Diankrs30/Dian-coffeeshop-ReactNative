@@ -9,8 +9,15 @@ const initialState = {
 };
 
 const userReducer = (prevState = initialState, {type, payload}) => {
-  const {getProfile, editProfile, userReset, pending, rejected, fulfilled} =
-    ACTION_STRING;
+  const {
+    getProfile,
+    editProfile,
+    userReset,
+    editPassword,
+    pending,
+    rejected,
+    fulfilled,
+  } = ACTION_STRING;
   switch (type) {
     case getProfile + pending:
       return {
@@ -57,6 +64,29 @@ const userReducer = (prevState = initialState, {type, payload}) => {
         isError: false,
         isFulfilled: true,
         profile: {...prevState.profile, ...payload.data.data},
+      };
+
+    case editPassword + pending:
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case editPassword + rejected:
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        error: payload.error.message,
+      };
+    case editPassword + fulfilled:
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
       };
 
     case userReset:

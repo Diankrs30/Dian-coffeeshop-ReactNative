@@ -48,6 +48,13 @@ const styles = StyleSheet.create({
   },
   contentImage: {
     marginRight: 20,
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#dfdfdf',
+    borderRadius: 200,
+    width: 80,
+    height: 80,
   },
   btn: {
     flexDirection: 'row',

@@ -10,6 +10,33 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 30,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 40,
+    paddingTop: 40,
+    paddingBottom: 30,
+  },
+  textHeader: {
+    fontFamily: 'Poppins-ExtraBold',
+    fontSize: 18,
+    color: '#000',
+    textAlign: 'center',
+  },
+  btnOrder: {
+    paddingHorizontal: 80,
+    height: 70,
+    borderRadius: 20,
+    backgroundColor: '#6A4029',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textBtnOrder: {
+    fontFamily: 'Poppins-ExtraBold',
+    fontSize: 17,
+    color: '#fff',
+  },
   title: {
     fontFamily: 'Poppins-Black',
     fontWeight: 'bold',

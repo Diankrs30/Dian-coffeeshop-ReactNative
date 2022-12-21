@@ -90,6 +90,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  brown: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#6A4029',
+    borderRadius: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   textBtnSize: {
     fontFamily: 'Poppins-Bold',
     fontSize: 14,

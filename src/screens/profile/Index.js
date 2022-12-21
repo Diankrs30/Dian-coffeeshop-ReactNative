@@ -48,15 +48,21 @@ const Profile = () => {
         </View>
         <View style={styles.wrapperProfile}>
           <View style={styles.contentImage}>
-            <View style={{width: 80, height: 80, borderRadius: 200}}>
+            <View
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 200,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               {profile.isLoading ? (
                 <ActivityIndicator />
               ) : (
                 <Image
-                  source={{
-                    uri:
-                      profile[0].image !== null ? profile[0].image : DefaultImg,
-                  }}
+                  source={
+                    profile[0].image ? {uri: profile[0].image} : DefaultImg
+                  }
                   style={{width: 80, height: 80, borderRadius: 200}}
                 />
               )}
@@ -93,7 +99,9 @@ const Profile = () => {
             </Text>
             <Image source={next} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate('Edit Password')}>
             <Text
               style={{fontFamily: 'Poppins-Bold', fontSize: 18, color: '#000'}}>
               Edit password

@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 
 import styles from './style';
@@ -42,8 +43,10 @@ function History() {
   const totalPage = useSelector(state => state.transaction.meta.totalPage);
   const token = useSelector(state => state.auth.userData.token);
   const [querys, setQuerys] = useState({
+    sort: 'created_at',
+    order: 'asc',
     page: 1,
-    limit: 5,
+    limit: 10,
   });
 
   const rupiah = number => {
@@ -78,19 +81,102 @@ function History() {
 
   return (
     <View style={styles.container}>
-      <View style={{padding: 30}}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            onLongPress={() => {
-              navigation.navigate('HomeTab', {screen: 'Home'});
-            }}>
-            <Image source={back} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      {history.length === 0 ? (
+      {history.length > 0 ? (
         <View>
+          <View>
+            <View style={styles.header}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                onLongPress={() => {
+                  navigation.navigate('HomeTab', {screen: 'Home'});
+                }}>
+                <Image source={back} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <View>
+              <Text style={styles.title}>Order History</Text>
+              <View style={styles.swipe}>
+                <Image source={iconSwipe} />
+                <Text style={styles.swipeText}>swipe on an item to delete</Text>
+              </View>
+            </View>
+            {/* card history */}
+            {isLoading ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <ActivityIndicator size={'large'} />
+              </View>
+            ) : (
+              <View style={{paddingHorizontal: 30, height: 550}}>
+                <FlatList
+                  data={history}
+                  keyExtractor={item => item.id}
+                  onEndReachedThreshold={0.2}
+                  onEndReached={getPagination}
+                  ListFooterComponent={loadingPagination}
+                  renderItem={({item, index}) => {
+                    return (
+                      // <SwipeItem containerView={ViewOverflow} rightButtons={leftButton}>
+                      <View key={index} style={{marginBottom: 10}}>
+                        <View
+                          style={{
+                            backgroundColor: 'white',
+                            width: width / 1.15,
+                            borderRadius: 20,
+                            flexDirection: 'row',
+                            padding: 15,
+                          }}>
+                          <View>
+                            <Image
+                              source={{
+                                uri:
+                                  `${item.image}` !== null
+                                    ? `${item.image}`
+                                    : ImageDefault,
+                              }}
+                              style={styles.imageCard}
+                            />
+                          </View>
+                          <View style={{paddingLeft: 10}}>
+                            <Text style={styles.cardTitle}>
+                              {item.product_name}
+                            </Text>
+                            <Text style={styles.cardPrice}>
+                              {rupiah(item.total_price)}
+                            </Text>
+                            <Text style={styles.cardStatus}>
+                              {item.status_order}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      // </SwipeItem>
+                    );
+                  }}
+                />
+              </View>
+            )}
+          </View>
+        </View>
+      ) : (
+        <View style={{flex: 1}}>
+          <View>
+            <View style={styles.header}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                onLongPress={() => {
+                  navigation.navigate('HomeTab', {screen: 'Home'});
+                }}>
+                <Image source={back} />
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style={styles.containerEmpty}>
             <>
               <Image source={iconHistory} />
@@ -100,71 +186,17 @@ function History() {
               Hit the orange button down below to Create an order
             </Text>
           </View>
-          <View style={{paddingHorizontal: 50}}>
+          <View
+            style={{
+              paddingHorizontal: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <TouchableOpacity
               style={styles.btnOrder}
               onPress={() => navigation.navigate('Home')}>
               <Text style={styles.textBtnOrder}>Start ordering</Text>
             </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
-        <View>
-          <View>
-            <Text style={styles.title}>Order History</Text>
-            <View style={styles.swipe}>
-              <Image source={iconSwipe} />
-              <Text style={styles.swipeText}>swipe on an item to delete</Text>
-            </View>
-          </View>
-          {/* card history */}
-          <View style={{paddingHorizontal: 30, height: 550}}>
-            <FlatList
-              data={history}
-              keyExtractor={item => item.id}
-              onEndReachedThreshold={0.2}
-              onEndReached={getPagination}
-              ListFooterComponent={loadingPagination}
-              renderItem={({item, index}) => {
-                return (
-                  // <SwipeItem containerView={ViewOverflow} rightButtons={leftButton}>
-                  <View key={index} style={{marginBottom: 10}}>
-                    <View
-                      style={{
-                        backgroundColor: 'white',
-                        width: width / 1.15,
-                        borderRadius: 20,
-                        flexDirection: 'row',
-                        padding: 15,
-                      }}>
-                      <View>
-                        <Image
-                          source={{
-                            uri:
-                              `${item.image}` !== null
-                                ? `${item.image}`
-                                : ImageDefault,
-                          }}
-                          style={styles.imageCard}
-                        />
-                      </View>
-                      <View style={{paddingLeft: 10}}>
-                        <Text style={styles.cardTitle}>
-                          {item.product_name}
-                        </Text>
-                        <Text style={styles.cardPrice}>
-                          {rupiah(item.total_price)}
-                        </Text>
-                        <Text style={styles.cardStatus}>
-                          {item.status_order}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                  // </SwipeItem>
-                );
-              }}
-            />
           </View>
         </View>
       )}

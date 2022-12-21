@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import transactionActions from '../../redux/actions/transaction';
 import updateCartAction from '../../redux/actions/updateCart';
 import {useNavigation} from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
 import {Divider} from '@rneui/themed';
 import {
   View,
@@ -62,6 +63,13 @@ function Payment() {
         ToastAndroid.TOP,
       );
     }
+
+    PushNotification.localNotification({
+      channelId: 'local-notification',
+      title: 'Transaction Notification',
+      message: 'Transaction created succesfully, Please complete your payment!',
+      autoCancel: true,
+    });
 
     const newProductItem = {
       ...productItem,

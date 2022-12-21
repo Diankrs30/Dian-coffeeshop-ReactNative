@@ -31,6 +31,7 @@ const ProductDetail = props => {
   const [selectProduct, setSelectProduct] = useState('');
   const [productItem, setProductItem] = useState({});
   const [counter, setCounter] = useState(1);
+  const [selescted, setSelected] = useState('');
 
   const rupiah = number => {
     return `IDR ${number

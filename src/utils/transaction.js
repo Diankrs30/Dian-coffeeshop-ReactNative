@@ -16,6 +16,8 @@ export const createTransaction = (body, token) => {
 
 export const getHistory = (param, token) => {
   const queryParam = {
+    sort: param.sort ?? 'created_at',
+    order: param.order ?? 'asc',
     page: param.page ?? '1',
     limit: param.limit ?? '5',
   };

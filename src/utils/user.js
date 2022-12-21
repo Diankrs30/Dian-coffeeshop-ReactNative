@@ -18,3 +18,8 @@ export const editProfile = (body, token) => {
   const URL = HOST + '/users/profile';
   return axios.patch(URL, body, config(token));
 };
+
+export const editPassword = (body, token) => {
+  const URL = HOST + '/users/account';
+  return axios.patch(URL, body, config(token));
+};

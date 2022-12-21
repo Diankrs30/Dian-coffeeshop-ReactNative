@@ -28,6 +28,7 @@ import CreateProduct from './src/screens/createProduct/Index';
 import AllPromo from './src/screens/promo/Index';
 import CreatePromo from './src/screens/createPromo/Index';
 import EditPromo from './src/screens/editPomo/Index';
+import EditPassword from './src/screens/editPassword/Index';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const iconHome = require('./src/assets/images/home.png');
@@ -166,8 +167,8 @@ const ProfileTab = () => (
     }}>
     <Stack.Screen name="Profile" component={Profile} />
     <Stack.Screen name="History" component={History} />
-
     <Stack.Screen name="Edit Profile" component={EditProfile} />
+    <Stack.Screen name="Edit Password" component={EditPassword} />
   </Stack.Navigator>
 );
 

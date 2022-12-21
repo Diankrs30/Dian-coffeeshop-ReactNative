@@ -19,7 +19,7 @@ import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
 import productAction from '../../redux/actions/product';
 import ImageDefault from '../../assets/images/icon-food.png';
 import pencil from '../../assets/images/pencil.png';
-import authAction from '../../redux/actions/auth';
+// import authAction from '../../redux/actions/auth';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -109,6 +109,14 @@ const Home = () => {
     };
     dispatch(productAction.getAllProductThunk(param));
   };
+
+  // const handleShowNotification = msg => {
+  //   PushNotification.localNotification({
+  //     channelId: 'local-notification',
+  //     channelName: 'Local Notification',
+  //     message: msg,
+  //   });
+  // };
 
   useEffect(() => {
     const queryParam = {
@@ -254,6 +262,13 @@ const Home = () => {
               </TouchableOpacity>
             </View>
           )}
+          {/* <TouchableOpacity
+            style={styles.btnAddProd}
+            onPress={() =>
+              handleShowNotification('Welcome to Dian Coffeeshop')
+            }>
+            <Text style={styles.textBtnAddProd}>Test Notification</Text>
+          </TouchableOpacity> */}
         </ScrollView>
       </Drawer>
     </View>

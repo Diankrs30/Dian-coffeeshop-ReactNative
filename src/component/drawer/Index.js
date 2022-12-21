@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import authAction from '../../redux/actions/auth';
@@ -35,6 +35,7 @@ function Navbar({children}) {
   console.log(profile);
   const auth = useSelector(state => state.auth.userData);
   const [modalVisible, setModalVisible] = useState(false);
+  const refDrawer = useRef();
   // const [openDrawer, setOpenDrawer] = useState(false);
 
   const logoutHandler = () => {
@@ -62,9 +63,11 @@ function Navbar({children}) {
         {profile.length > 0 && (
           <View style={styles.continerSwipe}>
             <Image
-              source={{
-                uri: `${profile[0].image}` ? `${profile[0].image}` : DefaultImg,
-              }}
+              source={
+                `${profile[0].image}`
+                  ? {uri: `${profile[0].image}`}
+                  : DefaultImg
+              }
               // source={profile[0].image}
               style={styles.imageDrawer}
             />
@@ -76,9 +79,10 @@ function Navbar({children}) {
           <View>
             <Pressable
               style={styles.containerBottom}
-              onPress={() =>
-                navigation.navigate('ProfileTab', {screen: 'Edit Profile'})
-              }>
+              onPress={() => {
+                refDrawer.current.closeDrawer();
+                navigation.navigate('ProfileTab', {screen: 'Edit Profile'});
+              }}>
               <Image source={IconProfile} style={styles.imageBottom} />
               <Text style={styles.textBottom}>Edit Profile</Text>
             </Pressable>
@@ -90,9 +94,10 @@ function Navbar({children}) {
             <Divider style={styles.devider} />
             <Pressable
               style={styles.containerBottom}
-              onPress={() =>
-                navigation.navigate('HomeTab', {screen: 'Screen Favorite'})
-              }>
+              onPress={() => {
+                refDrawer.current.closeDrawer();
+                navigation.navigate('HomeTab', {screen: 'Screen Favorite'});
+              }}>
               <Image source={IconMenu} style={styles.imageBottom} />
               <Text style={styles.textBottom}>All menu</Text>
             </Pressable>
@@ -135,7 +140,10 @@ function Navbar({children}) {
               <View style={{display: 'flex', flexDirection: 'row'}}>
                 <Pressable
                   style={[styles.button, styles.buttonYes]}
-                  onPress={logoutHandler}>
+                  onPress={() => {
+                    refDrawer.current.closeDrawer();
+                    logoutHandler();
+                  }}>
                   {auth.isLoading ? (
                     <ActivityIndicator size="small" color="white" />
                   ) : (
@@ -158,6 +166,7 @@ function Navbar({children}) {
   return (
     <>
       <DrawerLayout
+        ref={refDrawer}
         drawerWidth={300}
         drawerPosition={DrawerLayout.positions.Left}
         drawerType="front"
@@ -166,9 +175,7 @@ function Navbar({children}) {
         drawerContainerStyle={{borderTopRightRadius: 30}}
         renderNavigationView={renderDrawer}>
         <View style={styles.header}>
-          <Pressable
-          // onPress={() => DrawerLayout.current.openDrawer(true)}
-          >
+          <Pressable onPress={() => refDrawer.current.openDrawer()}>
             <Image source={Hambuger} />
           </Pressable>
           <TouchableOpacity
