@@ -26,6 +26,8 @@ import Splashscreen from './src/screens/splash/Index.js';
 import EditProduct from './src/screens/editProduct/Index';
 import CreateProduct from './src/screens/createProduct/Index';
 import AllPromo from './src/screens/promo/Index';
+import DetailPromo from './src/screens/detailPromo/Index';
+import EditPromo from './src/screens/editPomo/Index';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const iconHome = require('./src/assets/images/home.png');
@@ -142,6 +144,16 @@ const HomeTab = () => (
     <Stack.Screen
       name="All Promo"
       component={AllPromo}
+      screenOptions={{headerShown: true}}
+    />
+    <Stack.Screen
+      name="Detail Promo"
+      component={DetailPromo}
+      screenOptions={{headerShown: true}}
+    />
+    <Stack.Screen
+      name="Edit Promo"
+      component={EditPromo}
       screenOptions={{headerShown: true}}
     />
   </Stack.Navigator>

@@ -6,6 +6,7 @@ import {
   editProduct,
   createProduct,
   getPromo,
+  getPromoById,
 } from '../../utils/product';
 
 const getAllProductPending = () => ({
@@ -89,6 +90,20 @@ const getAllPromoRejected = error => ({
 
 const getAllPromoFulfilled = data => ({
   type: ACTION_STRING.getAllPromo.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
+const getDetailPromoPending = () => ({
+  type: ACTION_STRING.detailPromo.concat(ACTION_STRING.pending),
+});
+
+const getDetailPromoRejected = error => ({
+  type: ACTION_STRING.detailPromo.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const getDetailPromoFulfilled = data => ({
+  type: ACTION_STRING.detailPromo.concat(ACTION_STRING.fulfilled),
   payload: {data},
 });
 
@@ -181,6 +196,22 @@ const getAllPromoThunk = param => {
   };
 };
 
+const getDetailPromoThunk = (id, token) => {
+  return async dispatch => {
+    try {
+      dispatch(getDetailPromoPending());
+      const result = await getPromoById(id, token);
+      dispatch(getDetailPromoFulfilled(result.data));
+      // if (typeof cbSuccess === 'function') {
+      //   cbSuccess(result.data.data);
+      // }
+    } catch (error) {
+      dispatch(getDetailPromoRejected(error));
+      console.log(error);
+    }
+  };
+};
+
 const productAction = {
   getAllProductThunk,
   getDetailProductThunk,
@@ -188,6 +219,7 @@ const productAction = {
   editProductThunk,
   createProductThunk,
   getAllPromoThunk,
+  getDetailPromoThunk,
 };
 
 export default productAction;

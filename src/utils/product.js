@@ -55,3 +55,8 @@ export const getPromo = param => {
   const URL = `${HOST}/promos/?search=${queryParam.search}&page=${queryParam.page}&limit=${queryParam.limit}`;
   return axios.get(URL);
 };
+
+export const getPromoById = (id, token) => {
+  const URL = HOST + `//promos/detail_promo/${id}`;
+  return axios.get(URL, config(token));
+};

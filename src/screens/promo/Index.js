@@ -23,15 +23,18 @@ import {useDispatch, useSelector} from 'react-redux';
 import productAction from '../../redux/actions/product';
 
 const back = require('../../assets/images/iconBack.png');
+import ImageDefault from '../../assets/images/icon-food.png';
 // import debounce from 'lodash.debounce';
 
 function AllPromo() {
+  const {width} = useWindowDimensions();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const promo = useSelector(state => state.product.promo);
   const isLoading = useSelector(state => state.product.isLoading);
   const pagination = useSelector(state => state.product.meta);
 
+  const [selectPromo, setSelectPromo] = useState('');
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState({
     code: '',
@@ -55,6 +58,14 @@ function AllPromo() {
       limit: 6,
     };
     dispatch(productAction.getAllPromoThunk(param));
+  };
+
+  const toPromoDetail = item => {
+    setSelectPromo(item.id);
+    console.log('....', item.id);
+    navigation.navigate('Detail Promo', {
+      id: item.id,
+    });
   };
 
   //   const debounceHandler = useCallback(
@@ -142,14 +153,56 @@ function AllPromo() {
         promo.length > 0 && (
           <FlatList
             data={promo}
-            renderItem={({item}) => {
+            renderItem={({item, idx}) => {
               return (
-                <Card
-                  image={item.image}
-                  code_promo={item.code_promo}
-                  promo_description={item.promo_description}
-                  // subtotal={item.subtotal}
-                />
+                // <Card
+                //   image={item.image}
+                //   code_promo={item.code_promo}
+                //   promo_description={item.promo_description}
+                //   // subtotal={item.subtotal}
+                // />
+                <View key={idx}>
+                  <TouchableOpacity
+                    style={{
+                      display: 'flex',
+                      paddingLeft: 25,
+                      paddingRight: 25,
+                      marginVertical: 10,
+                    }}
+                    onPress={() => toPromoDetail(item)}>
+                    <View
+                      style={{
+                        backgroundColor: '#F5C361',
+                        width: width / 1.15,
+                        display: 'flex',
+                        borderRadius: 20,
+                        flexDirection: 'row',
+                        padding: 15,
+                      }}>
+                      <View>
+                        <Image
+                          source={{
+                            uri:
+                              `${item.image}` !== null
+                                ? `${item.image}`
+                                : ImageDefault,
+                          }}
+                          style={styles.imageCard}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          paddingLeft: 15,
+                          justifyContent: 'center',
+                        }}>
+                        <Text style={styles.cardTitle}>{item.code_promo}</Text>
+                        <Text style={styles.cardStatus}>
+                          {item.promo_description}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               );
             }}
             onEndReachedThreshold={0.5}

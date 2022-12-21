@@ -60,12 +60,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#895537',
   },
-  cardStatus: {
-    width: '100%',
-    fontFamily: 'Poppins-Regular',
-    fontSize: 10,
-    color: '#895537',
-  },
   trash: {
     backgroundColor: '#6A4029',
     width: 55,
@@ -110,6 +104,14 @@ const styles = StyleSheet.create({
     fontSize: 17,
     flex: 1,
     color: '#6A4029',
+  },
+  cardStatus: {
+    width: 200,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 15,
+    color: 'black',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
 });
 

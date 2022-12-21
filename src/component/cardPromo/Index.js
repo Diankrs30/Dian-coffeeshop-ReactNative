@@ -7,9 +7,13 @@ import {
 } from 'react-native';
 import React from 'react';
 import styles from './style';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
-const CardAllPromo = ({image, code_promo, promo_description}) => {
+const CardAllPromo = ({id, image, code_promo, promo_description}) => {
   const {width} = useWindowDimensions();
+  const navigation = useNavigation();
+  const role = useSelector(state => state.auth.userData.role);
 
   return (
     <TouchableOpacity
@@ -18,6 +22,9 @@ const CardAllPromo = ({image, code_promo, promo_description}) => {
         paddingLeft: 25,
         paddingRight: 25,
         marginVertical: 10,
+      }}
+      onPress={() => {
+        navigation.navigate('Detail Promo', id);
       }}>
       <View
         style={{
