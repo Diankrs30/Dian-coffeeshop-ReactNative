@@ -20,6 +20,7 @@ import {
 
 import styles from './style';
 import calendar from '../../assets/images/calendar.png';
+import SelectDropdown from 'react-native-select-dropdown';
 const back = require('../../assets/images/iconBack.png');
 const trash = require('../../assets/images/trash.png');
 
@@ -27,6 +28,8 @@ function CreatePromo() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const promo = useSelector(state => state.product.detailPromo);
+  const AllProduct = useSelector(state => state.product.allProduct);
+  const errorMsg = useSelector(state => state.product.error);
   const token = useSelector(state => state.auth.userData.token);
   const isLoading = useSelector(state => state.product.isLoading);
   const product = useSelector(state => state.product.allProduct);
@@ -47,21 +50,24 @@ function CreatePromo() {
   const createPromoHandler = () => {
     const createSuccess = () => {
       ToastAndroid.showWithGravity(
-        'Data changed successfully',
+        'Create promo successfully',
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
         navigation.navigate('All Promo'),
       );
     };
-    const createDenied = error => {
+    const createDenied = () => {
       ToastAndroid.showWithGravity(
-        `${error}`,
+        `${errorMsg}`,
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
       );
     };
 
     let bodies = new FormData();
+    // if (body?.products_id) {
+    //   bodies.append('products_id', body.products_id);
+    // }
     if (body?.code_promo) {
       bodies.append('code_promo', body.code_promo);
     }
@@ -244,6 +250,23 @@ function CreatePromo() {
                 placeholderTextColor="#000"
                 onChangeText={text => changeHandler(text, 'promo_name')}
               />
+              {/* <SelectDropdown
+                data={AllProduct}
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem, index);
+                  setBody({...body, products_id: selectedItem.id});
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem.product_name;
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item.product_name;
+                }}
+              /> */}
               <Text style={styles.text}>Discount</Text>
               <TextInput
                 style={styles.input_bottom}

@@ -91,7 +91,7 @@ const registerThunk = (body, cbSuccess, cbDenied) => {
       dispatch(registerRejected(error));
       // console.log(error);
       if (typeof cbDenied === 'function') {
-        cbDenied();
+        cbDenied(error.response.data.status);
       }
     }
   };
@@ -111,7 +111,7 @@ const loginThunk = (body, cbSuccess, cbDenied) => {
       dispatch(loginRejected(error));
       console.log(error);
       if (typeof cbDenied === 'function') {
-        cbDenied();
+        cbDenied(error.response.data.status);
       }
     }
   };
@@ -130,7 +130,7 @@ const forgotThunk = (body, cbSuccess, cbDenied) => {
     } catch (error) {
       dispatch(forgotRejected(error));
       if (typeof cbDenied === 'function') {
-        cbDenied();
+        cbDenied(error.response.data.status);
       }
     }
   };
@@ -150,7 +150,7 @@ const resetPwdThunk = (body, cbSuccess, cbDenied) => {
       console.log(error);
       dispatch(resetRejected(error));
       if (typeof cbDenied === 'function') {
-        cbDenied();
+        cbDenied(error.response.data.status);
       }
     }
   };

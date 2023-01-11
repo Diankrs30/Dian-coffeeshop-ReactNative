@@ -23,7 +23,8 @@ const AllProduct = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [selectProduct, setSelectProduct] = useState('');
-  const allProduct = useSelector(state => state.product.allProduct);
+  // const allProduct = useSelector(state => state.product.allProduct);
+  const [allProduct, setAllProduct] = useState([]);
   const totalPage = useSelector(state => state.product.meta.totalPage);
   const isLoading = useSelector(state => state.product.isLoading);
   const [search, setSearch] = useState('');
@@ -48,91 +49,138 @@ const AllProduct = () => {
     });
   };
 
-  const handleCofee = () => {
-    const param = {
-      order: '',
-      sort: '',
-      category: 'Coffee',
-      page: 1,
-      limit: 6,
-    };
-    setQuerys({...querys, ...param});
-    dispatch(productAction.getAllProductThunk(param));
+  const handleCofee = async () => {
+    setAllProduct([]);
+    try {
+      const param = {
+        order: '',
+        sort: '',
+        category: 'Coffee',
+        page: 1,
+        limit: 6,
+      };
+      setQuerys({...querys, ...param});
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleNonCofee = () => {
-    const param = {
-      order: '',
-      sort: '',
-      category: 'Non Coffee',
-      page: 1,
-      limit: 6,
-    };
-    setQuerys({...querys, ...param});
-    dispatch(productAction.getAllProductThunk(param));
+  const handleNonCofee = async () => {
+    setAllProduct([]);
+    try {
+      const param = {
+        order: '',
+        sort: '',
+        category: 'Non Coffee',
+        page: 1,
+        limit: 6,
+      };
+      setQuerys({...querys, ...param});
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleFood = () => {
-    const param = {
-      order: '',
-      sort: '',
-      category: 'Food',
-      page: 1,
-      limit: 6,
-    };
-    setQuerys({...querys, ...param});
-    dispatch(productAction.getAllProductThunk(param));
-  };
-
-  const handleFavorite = () => {
-    const param = {
-      sort: 'total_selling',
-      order: 'desc',
-      category: '',
-      page: 1,
-      limit: 6,
-    };
-    setQuerys({...querys, ...param});
-    dispatch(productAction.getAllProductThunk(param));
-  };
-
-  const handleMaxPrice = () => {
-    const param = {
-      sort: 'price',
-      order: 'desc',
-      category: '',
-      page: 1,
-      limit: 6,
-    };
-    setQuerys({...querys, ...param});
-    dispatch(productAction.getAllProductThunk(param));
+  const handleFood = async () => {
+    setAllProduct([]);
+    try {
+      const param = {
+        order: '',
+        sort: '',
+        category: 'Food',
+        page: 1,
+        limit: 6,
+      };
+      setQuerys({...querys, ...param});
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleMinPrice = () => {
-    const param = {
-      sort: 'price',
-      order: 'asc',
-      category: '',
-      page: 1,
-      limit: 6,
-    };
-    setQuerys({...querys, ...param});
-    dispatch(productAction.getAllProductThunk(param));
+  const handleFavorite = async () => {
+    setAllProduct([]);
+    try {
+      const param = {
+        sort: 'total_selling',
+        order: 'desc',
+        category: '',
+        page: 1,
+        limit: 6,
+      };
+      setQuerys({...querys, ...param});
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleMaxPrice = async () => {
+    setAllProduct([]);
+    try {
+      const param = {
+        sort: 'price',
+        order: 'desc',
+        category: '',
+        page: 1,
+        limit: 6,
+      };
+      setQuerys({...querys, ...param});
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleMinPrice = async () => {
+    setAllProduct([]);
+    try {
+      const param = {
+        sort: 'price',
+        order: 'asc',
+        category: '',
+        page: 1,
+        limit: 6,
+      };
+      setQuerys({...querys, ...param});
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlersearch = text => {
     setSearch(text);
   };
 
-  const handlePresSearch = () => {
-    const param = {
-      search,
-      page: 1,
-      limit: 6,
-    };
-    dispatch(productAction.getAllProductThunk(param));
+  const handlePresSearch = async () => {
+    try {
+      const param = {
+        search,
+        page: 1,
+        limit: 6,
+      };
+      const result = await dispatch(productAction.getAllProductThunk(param));
+      setAllProduct(result.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const getAllProductMore = () => {
-    dispatch(productAction.getAllProductThunk(querys));
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>', allProduct);
+  const getAllProductMore = async () => {
+    try {
+      const result = await dispatch(productAction.getAllProductThunk(querys));
+      setAllProduct([...allProduct, ...result.data]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getPagination = () => {
@@ -152,8 +200,8 @@ const AllProduct = () => {
   };
 
   useEffect(() => {
-    dispatch(productAction.getAllProductThunk(querys));
-  }, [dispatch, querys]);
+    getAllProductMore();
+  }, []);
 
   return (
     <>
@@ -235,14 +283,14 @@ const AllProduct = () => {
             <View style={styles.radio}>
               <Pressable
                 style={
-                  querys.order === 'desc'
+                  querys.order === 'desc' && querys.sort === 'price'
                     ? styles.checkedOuter
                     : styles.unchekedOuter
                 }
                 onPress={handleMaxPrice}>
                 <View
                   style={
-                    querys.order === 'desc'
+                    querys.order === 'desc' && querys.sort === 'price'
                       ? styles.checkedInner
                       : styles.uncheckedInner
                   }
@@ -250,7 +298,7 @@ const AllProduct = () => {
               </Pressable>
               <Text
                 style={
-                  querys.order === 'desc'
+                  querys.order === 'desc' && querys.sort === 'price'
                     ? styles.checkedText
                     : styles.uncheckedText
                 }>
@@ -260,7 +308,7 @@ const AllProduct = () => {
             <View style={styles.radio}>
               <Pressable
                 style={
-                  querys.order === 'asc'
+                  querys.order === 'asc' && querys.sort === 'price'
                     ? styles.checkedOuter
                     : styles.unchekedOuter
                 }
@@ -297,7 +345,7 @@ const AllProduct = () => {
                 //     'https://png.pngtree.com/element_our/sm/20180516/sm_5afbf1d28feb1.jpg';
                 // }
                 return (
-                  <View style={styles.wrapperCard} key={index}>
+                  <View style={styles.wrapperCard} key={item.id}>
                     <TouchableOpacity
                       style={styles.card}
                       onPress={() => toProductDetail(item)}>

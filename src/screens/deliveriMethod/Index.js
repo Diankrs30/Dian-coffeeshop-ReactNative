@@ -19,7 +19,7 @@ const back = require('../../assets/images/iconBack.png');
 const DeliveryMethod = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const profile = useSelector(state => state.user.profile[0]);
+  const profile = useSelector(state => state.user.profile);
   const updateCart = useSelector(state => state.updateCart);
   const [method, setMethod] = useState('3');
   const [productItem, setproductItem] = useState({

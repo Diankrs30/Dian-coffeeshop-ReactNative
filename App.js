@@ -29,6 +29,7 @@ import AllPromo from './src/screens/promo/Index';
 import CreatePromo from './src/screens/createPromo/Index';
 import EditPromo from './src/screens/editPomo/Index';
 import EditPassword from './src/screens/editPassword/Index';
+import ChatRoom from './src/screens/chatRoom/Index';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const iconHome = require('./src/assets/images/home.png');
@@ -178,6 +179,7 @@ const ChatTab = () => (
       headerShown: false,
     }}>
     <Stack.Screen name="Chat" component={Chat} />
+    <Stack.Screen name="Chat Room" component={ChatRoom} />
   </Stack.Navigator>
 );
 

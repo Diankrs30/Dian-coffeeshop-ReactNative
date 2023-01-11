@@ -42,7 +42,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data,
+        error: payload.error.response.data.status,
       };
     case getDetailProduct + fulfilled:
       return {
@@ -66,7 +66,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isError: true,
         isFulfilled: false,
-        error: payload.error.message,
+        error: payload.error.response.data.status,
       };
     case getAllProduct + fulfilled:
       return {
@@ -91,7 +91,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isError: true,
         isFulfilled: false,
-        error: payload.error.response.data,
+        error: payload.error.response.data.status,
       };
     case getSize + fulfilled:
       return {
@@ -114,7 +114,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.message,
+        error: payload.error.response.data.status,
       };
     case editProduct + fulfilled:
       return {
@@ -138,7 +138,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.message,
+        error: payload.error.response.data.status,
       };
     case createProduct + fulfilled:
       return {
@@ -161,7 +161,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isLoading: false,
         isError: true,
         isFulfilled: false,
-        error: payload.error.message,
+        error: payload.error.response.data.status,
       };
     case getAllPromo + fulfilled:
       const newPromo = payload.data.data;
@@ -172,6 +172,8 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: false,
         isFulfilled: true,
         promo: pagePromo > 1 ? [...prevState.promo, ...newPromo] : newPromo,
+        // promo: payload.data.data,
+        // meta: payload.data.meta,
       };
 
     case detailPromo + pending:
@@ -187,7 +189,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.response.data,
+        error: payload.error.response.data.status,
       };
     case detailPromo + fulfilled:
       return {
@@ -211,7 +213,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.message,
+        error: payload.error.response.data.status,
       };
     case editPromo + fulfilled:
       return {
@@ -235,7 +237,7 @@ const ProductReducer = (prevState = initialState, {type, payload}) => {
         isError: true,
         isLoading: false,
         isFulfilled: false,
-        error: payload.error.message,
+        error: payload.error.response.data.status,
       };
     case createPromo + fulfilled:
       return {

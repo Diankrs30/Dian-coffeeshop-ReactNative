@@ -30,8 +30,9 @@ const EditProfile = () => {
   const profile = useSelector(state => state.user.profile);
   const isLoading = useSelector(state => state.user.isLoading);
   const token = useSelector(state => state.auth.userData.token);
+  const errorMsg = useSelector(state => state.user.error);
 
-  const [gender, setGender] = useState(profile[0].gender);
+  const [gender, setGender] = useState(profile.gender);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState();
@@ -46,6 +47,7 @@ const EditProfile = () => {
 
   const saveHandler = () => {
     const updateSuccess = () => {
+      dispatch(userAction.getProfileThunk(token));
       ToastAndroid.showWithGravity(
         'Data changed successfully',
         ToastAndroid.SHORT,
@@ -53,12 +55,12 @@ const EditProfile = () => {
         navigation.navigate('Profile'),
       );
     };
-    const updateDenied = error => {
+    const updateDenied = () => {
       ToastAndroid.showWithGravity(
-        `${error}`,
+        `${errorMsg}`,
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
-        navigation.navigate('Profile'),
+        // navigation.navigate('Profile'),
       );
     };
     let bodies = new FormData();
@@ -74,10 +76,10 @@ const EditProfile = () => {
     if (body?.last_name) {
       bodies.append('last_name', body.last_name);
     }
-    if (updateDate !== profile[0].birthday) {
+    if (updateDate !== profile.birthday) {
       bodies.append('date_of_birth', updateDate);
     }
-    if (gender !== profile[0].gender) {
+    if (gender !== profile.gender) {
       bodies.append('gender', gender);
     }
     if (file) {
@@ -90,7 +92,6 @@ const EditProfile = () => {
     }
 
     // console.log('bodies', bodies);
-
     dispatch(
       userAction.editProfileThunk(bodies, token, updateSuccess, updateDenied),
     );
@@ -145,14 +146,14 @@ const EditProfile = () => {
   const dateHandler = date => new Date(date).toLocaleDateString();
 
   useEffect(() => {
-    if (profile[0].gender === 'male') {
+    if (profile.gender === 'male') {
       setGender('male');
     }
-    if (profile[0].gender === 'female') {
+    if (profile.gender === 'female') {
       setGender('female');
     }
-    setUpdateDate(profile[0].date_of_birth);
-    setDate(new Date(profile[0].date_of_birth));
+    setUpdateDate(profile.date_of_birth);
+    setDate(new Date(profile.date_of_birth));
     setFile();
   }, [profile]);
 
@@ -177,8 +178,8 @@ const EditProfile = () => {
                 source={
                   file
                     ? {uri: file[0].uri}
-                    : profile[0].image
-                    ? {uri: profile[0].image}
+                    : profile.image
+                    ? {uri: profile.image}
                     : ImageDefault
                 }
                 style={styles.image}
@@ -197,7 +198,7 @@ const EditProfile = () => {
             <TextInput
               style={styles.textInput}
               keyBoardType="text"
-              placeholder={profile[0].display_name || 'Enter your display name'}
+              placeholder={profile.display_name || 'Enter your display name'}
               placeholderTextColor="#000"
               onChangeText={text => onChangeHandler(text, 'display_name')}
             />
@@ -257,7 +258,7 @@ const EditProfile = () => {
             <TextInput
               style={styles.textInput}
               keyBoardType="text"
-              placeholder={profile[0].email || 'Enter your email address'}
+              placeholder={profile.email || 'Enter your email address'}
               placeholderTextColor="#000"
               editable={false}
               selectTextOnFocus={false}
@@ -268,7 +269,7 @@ const EditProfile = () => {
             <TextInput
               style={styles.textInput}
               keyBoardType="text"
-              placeholder={profile[0].first_name || 'Enter your first name'}
+              placeholder={profile.first_name || 'Enter your first name'}
               placeholderTextColor="#000"
               onChangeText={text => onChangeHandler(text, 'first_name')}
             />
@@ -278,7 +279,7 @@ const EditProfile = () => {
             <TextInput
               style={styles.textInput}
               keyBoardType="text"
-              placeholder={profile[0].last_name || 'Enter your last name'}
+              placeholder={profile.last_name || 'Enter your last name'}
               placeholderTextColor="#000"
               onChangeText={text => onChangeHandler(text, 'last_name')}
             />
@@ -288,7 +289,7 @@ const EditProfile = () => {
             <TextInput
               style={styles.textInput}
               keyBoardType="text"
-              placeholder={profile[0].phone_number || 'Enter your phone number'}
+              placeholder={profile.phone_number || 'Enter your phone number'}
               placeholderTextColor="#000"
               editable={false}
               selectTextOnFocus={false}
@@ -304,7 +305,7 @@ const EditProfile = () => {
                 }}>
                 <Text
                   style={
-                    updateDate === profile[0].date_of_birth
+                    updateDate === profile.date_of_birth
                       ? styles.berubah
                       : styles.tanggal
                   }>
@@ -343,7 +344,7 @@ const EditProfile = () => {
               style={styles.textInput}
               keyBoardType="text"
               placeholder={
-                profile[0].delivery_address || 'Enter your delivery address'
+                profile.delivery_address || 'Enter your delivery address'
               }
               placeholderTextColor="#000"
               onChangeText={text => onChangeHandler(text, 'delivery_address')}

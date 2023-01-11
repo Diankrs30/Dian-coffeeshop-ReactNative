@@ -55,7 +55,7 @@ export const getPromo = param => {
 };
 
 export const getPromoById = (id, token) => {
-  const URL = HOST + `//promos/detail_promo/${id}`;
+  const URL = HOST + `/promos/detail_promo/${id}`;
   return axios.get(URL, config(token));
 };
 
@@ -67,4 +67,14 @@ export const editPromo = (body, id, token) => {
 export const createPromo = (body, token) => {
   const URL = HOST + '/promos/create_promo';
   return axios.post(URL, body, config(token));
+};
+
+export const deleteProduct = (id, token) => {
+  const URL = HOST + `/products/delete_products/${id}`;
+  return axios.delete(URL, config(token));
+};
+
+export const deletePromo = (id, token) => {
+  const URL = HOST + `/promos/delete_promo/${id}`;
+  return axios.delete(URL, config(token));
 };

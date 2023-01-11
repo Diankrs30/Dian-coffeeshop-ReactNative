@@ -29,12 +29,13 @@ const ProductDetail = props => {
   const id = props.route.params.id;
   const detailProduct = useSelector(state => state.product.detailProduct);
   const isPending = useSelector(state => state.product.isLoading);
+  const errorMsg = useSelector(state => state.product.error[0]);
   const token = useSelector(state => state.auth.userData.token);
 
   const [modal, setModalVisible] = useState(false);
 
   const [productItem, setProductItem] = useState({});
-  const [category, setCategory] = useState(detailProduct[0].category);
+  const [category, setCategory] = useState();
   const [file, setFile] = useState();
   const [body, setBody] = useState({});
 
@@ -103,16 +104,16 @@ const ProductDetail = props => {
         navigation.navigate('HomeTab', {screen: 'Screen Favorite'}),
       );
     };
-    const updateDenied = error => {
+    const updateDenied = () => {
       ToastAndroid.showWithGravity(
-        `${error}`,
+        'Update failed!',
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
       );
     };
 
     let bodies = new FormData();
-    if (category !== detailProduct[0].category_id) {
+    if (category !== detailProduct[0].category) {
       bodies.append('category_id', category);
     }
     if (body?.product_name) {
@@ -148,6 +149,15 @@ const ProductDetail = props => {
   };
 
   useEffect(() => {
+    if (detailProduct[0].category === 'Foods') {
+      setCategory('1');
+    }
+    if (detailProduct[0].category === 'Coffee') {
+      setCategory('2');
+    }
+    if (detailProduct[0].category === 'Non Coffee') {
+      setCategory('3');
+    }
     const getDetailProduct = data => {
       setProductItem(product => {
         return {

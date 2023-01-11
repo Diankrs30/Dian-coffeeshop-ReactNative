@@ -13,32 +13,29 @@ import {
   Image,
   ScrollView,
   TextInput,
-  Pressable,
   ToastAndroid,
   ActivityIndicator,
-  Modal,
-  Platform,
 } from 'react-native';
 import styles from './style';
 
-import ImageDefault from '../../assets/images/default-img.png';
-import pencil from '../../assets/images/pencil.png';
 const back = require('../../assets/images/iconBack.png');
-import calendar from '../../assets/images/calendar.png';
 
 const EditPassword = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const token = useSelector(state => state.auth.userData.token);
-  const isLoading = useSelector(state => state.auth.isLoading);
+  const isLoading = useSelector(state => state.user.isLoading);
+  const errorMsg = useSelector(state => state.user.error);
 
   const [isNewPwdShown, setIsNewPwdShown] = useState(true);
   const [isConfirmPwdShown, setIsConfirmPwdShown] = useState(true);
   const [isOtpShown, setIsOtpShown] = useState(true);
+  const [similarity1, setSimilarity1] = useState(false);
+  const [similarity2, setSimilarity2] = useState(false);
   const [form, setForm] = useState({
     old_password: '',
     new_password: '',
-    confirm_password: '',
+    // confirm_password: '',
   });
 
   const onChangeHandler = (text, type) => {
@@ -55,6 +52,80 @@ const EditPassword = () => {
 
   const toogleOldPwd = () => {
     setIsOtpShown(!isOtpShown);
+  };
+
+  const saveHandler = e => {
+    e.preventDefault();
+
+    if (!form.old_password && !form.new_password && !form.confirm_password) {
+      return ToastAndroid.showWithGravity(
+        'Fill your data correctly',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    if (!form.old_password) {
+      return ToastAndroid.showWithGravity(
+        'Input your old passwod',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    if (!form.new_password) {
+      return ToastAndroid.showWithGravity(
+        'Input your new passwod',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    if (!form.confirm_password) {
+      return ToastAndroid.showWithGravity(
+        'Confirm your new passwod',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    if (form.old_password === form.new_password) {
+      return ToastAndroid.showWithGravity(
+        'Old password already exist. Please change your new password',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    const editSuccess = () => {
+      ToastAndroid.showWithGravity(
+        'Password has been changed',
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        navigation.navigate('Profile'),
+      );
+      navigation.navigate('Home');
+    };
+
+    const editDenied = errorMsg => {
+      ToastAndroid.showWithGravity(
+        `${errorMsg}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    };
+
+    if (form.new_password !== form.confirm_password) {
+      return ToastAndroid.showWithGravity(
+        "Confirm Password doesn't match!",
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+      );
+    }
+
+    dispatch(
+      userAction.editPasswordThunk(form, token, editSuccess, editDenied),
+    );
   };
 
   // useEffect(() => {
@@ -104,7 +175,7 @@ const EditPassword = () => {
               alignItems: 'center',
             }}>
             <TextInput
-              secureTextEntry={isOtpShown}
+              secureTextEntry={isNewPwdShown}
               style={styles.inputPwd}
               keyBoardType="text"
               value={form.new_password}
@@ -113,7 +184,7 @@ const EditPassword = () => {
               onChangeText={text => onChangeHandler(text, 'new_password')}
             />
             <FontAwesome
-              icon={isOtpShown ? SolidIcons.eye : SolidIcons.eyeSlash}
+              icon={isNewPwdShown ? SolidIcons.eye : SolidIcons.eyeSlash}
               style={styles.iconPwd}
               onPress={toogleNewPassword}
             />
@@ -128,7 +199,7 @@ const EditPassword = () => {
               alignItems: 'center',
             }}>
             <TextInput
-              secureTextEntry={isOtpShown}
+              secureTextEntry={isConfirmPwdShown}
               style={styles.inputPwd}
               keyBoardType="text"
               value={form.confirm_password}
@@ -137,14 +208,14 @@ const EditPassword = () => {
               onChangeText={text => onChangeHandler(text, 'confirm_password')}
             />
             <FontAwesome
-              icon={isOtpShown ? SolidIcons.eye : SolidIcons.eyeSlash}
+              icon={isConfirmPwdShown ? SolidIcons.eye : SolidIcons.eyeSlash}
               style={styles.iconPwd}
               onPress={toogleConfirmPassword}
             />
           </View>
         </View>
 
-        <TouchableOpacity style={styles.btnSave}>
+        <TouchableOpacity style={styles.btnSave} onPress={saveHandler}>
           {isLoading ? (
             <ActivityIndicator size="large" color="white" />
           ) : (

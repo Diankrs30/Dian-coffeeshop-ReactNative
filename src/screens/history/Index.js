@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {SwipeItem, SwipeButtonsContainer} from 'react-native-swipe-item';
+import {
+  SwipeItem,
+  SwipeButtonsContainer,
+  SwipeProvider,
+} from 'react-native-swipe-item';
 import ImageDefault from '../../assets/images/icon-food.png';
 import {ViewOverflow} from 'react-native-view-overflow';
 import {useNavigation} from '@react-navigation/native';
@@ -38,7 +42,9 @@ function History() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {width} = useWindowDimensions();
-  const history = useSelector(state => state.transaction.history);
+  // const history = useSelector(state => state.transaction.history);
+
+  const [history, setHistory] = useState([]);
   const isLoading = useSelector(state => state.transaction.isLoading);
   const totalPage = useSelector(state => state.transaction.meta.totalPage);
   const token = useSelector(state => state.auth.userData.token);
@@ -46,7 +52,7 @@ function History() {
     sort: 'created_at',
     order: 'asc',
     page: 1,
-    limit: 10,
+    limit: 5,
   });
 
   const rupiah = number => {
@@ -55,8 +61,16 @@ function History() {
       .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')}`;
   };
 
-  const getAllHistoryMore = () => {
-    dispatch(transactionActions.getHistoryThunk(querys, token));
+  console.log(history);
+  const getAllHistoryMore = async () => {
+    try {
+      const result = await dispatch(
+        transactionActions.getHistoryThunk(querys, token),
+      );
+      setHistory([...history, ...result.data]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getPagination = () => {
@@ -76,12 +90,13 @@ function History() {
   };
 
   useEffect(() => {
-    dispatch(transactionActions.getHistoryThunk(querys, token));
-  }, [dispatch, token, querys]);
+    // dispatch(transactionActions.getHistoryThunk(querys, token));
+    getAllHistoryMore();
+  }, []);
 
   return (
     <View style={styles.container}>
-      {history.length > 0 ? (
+      {history && history.length !== 0 ? (
         <View>
           <View>
             <View style={styles.header}>
@@ -113,18 +128,19 @@ function History() {
                 <ActivityIndicator size={'large'} />
               </View>
             ) : (
-              <View style={{paddingHorizontal: 30, height: 550}}>
+              <View style={{paddingHorizontal: 25, height: 550}}>
                 <FlatList
                   data={history}
                   keyExtractor={item => item.id}
-                  onEndReachedThreshold={0.2}
-                  onEndReached={getPagination}
-                  ListFooterComponent={loadingPagination}
                   renderItem={({item, index}) => {
                     return (
-                      // <SwipeItem containerView={ViewOverflow} rightButtons={leftButton}>
-                      <View key={index} style={{marginBottom: 10}}>
+                      // <SwipeProvider>
+                      //   <SwipeItem
+                      //     containerView={ViewOverflow}
+                      //     rightButtons={leftButton}>
+                      <View style={{marginBottom: 10}}>
                         <View
+                          key={item.id}
                           style={{
                             backgroundColor: 'white',
                             width: width / 1.15,
@@ -156,9 +172,13 @@ function History() {
                           </View>
                         </View>
                       </View>
-                      // </SwipeItem>
+                      //   </SwipeItem>
+                      // </SwipeProvider>
                     );
                   }}
+                  onEndReachedThreshold={0.2}
+                  onEndReached={getPagination}
+                  ListFooterComponent={loadingPagination}
                 />
               </View>
             )}
@@ -194,7 +214,7 @@ function History() {
             }}>
             <TouchableOpacity
               style={styles.btnOrder}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => navigation.navigate('HomeTab', {screen: 'Home'})}>
               <Text style={styles.textBtnOrder}>Start ordering</Text>
             </TouchableOpacity>
           </View>

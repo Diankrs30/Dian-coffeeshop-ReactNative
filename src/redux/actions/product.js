@@ -9,6 +9,8 @@ import {
   getPromoById,
   editPromo,
   createPromo,
+  deleteProduct,
+  deletePromo,
 } from '../../utils/product';
 
 const getAllProductPending = () => ({
@@ -137,12 +139,41 @@ const createPromoFulfilled = data => ({
   payload: {data},
 });
 
+const deletePromoPending = () => ({
+  type: ACTION_STRING.deletePromo.concat(ACTION_STRING.pending),
+});
+
+const deletePromoRejected = error => ({
+  type: ACTION_STRING.deletePromo.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const deletePromoFulfilled = data => ({
+  type: ACTION_STRING.deletePromo.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
+const deleteProductPending = () => ({
+  type: ACTION_STRING.deleteProduct.concat(ACTION_STRING.pending),
+});
+
+const deleteProductRejected = error => ({
+  type: ACTION_STRING.deleteProduct.concat(ACTION_STRING.rejected),
+  payload: {error},
+});
+
+const deleteProductFulfilled = data => ({
+  type: ACTION_STRING.deleteProduct.concat(ACTION_STRING.fulfilled),
+  payload: {data},
+});
+
 const getAllProductThunk = param => {
   return async dispatch => {
     try {
       dispatch(getAllProductPending());
       const result = await getAllProduct(param);
       dispatch(getAllProductFulfilled(result.data));
+      return result.data;
     } catch (error) {
       dispatch(getAllProductRejected(error));
     }
@@ -181,7 +212,7 @@ const editProductThunk = (body, id, token, cbSuccess, cbDenied) => {
     try {
       dispatch(editProductPending());
       const result = await editProduct(body, id, token);
-      dispatch(editProductFulfilled(result.data.data));
+      dispatch(editProductFulfilled(result.data));
       if (typeof cbSuccess === 'function') {
         cbSuccess();
       }
@@ -199,7 +230,7 @@ const createProductThunk = (body, token, cbSuccess, cbDenied) => {
     try {
       dispatch(createProductPending());
       const result = await createProduct(body, token);
-      dispatch(createProductFulfilled(result.data.data));
+      dispatch(createProductFulfilled(result.data));
       if (typeof cbSuccess === 'function') {
         cbSuccess();
       }
@@ -235,6 +266,7 @@ const getDetailPromoThunk = (id, token) => {
       // if (typeof cbSuccess === 'function') {
       //   cbSuccess(result.data.data);
       // }
+      return result;
     } catch (error) {
       dispatch(getDetailPromoRejected(error));
       console.log(error);
@@ -247,7 +279,7 @@ const editPromoThunk = (body, id, token, cbSuccess, cbDenied) => {
     try {
       dispatch(editPromoPending());
       const result = await editPromo(body, id, token);
-      dispatch(editPromoFulfilled(result.data.data));
+      dispatch(editPromoFulfilled(result.data));
       if (typeof cbSuccess === 'function') {
         cbSuccess();
       }
@@ -265,12 +297,50 @@ const createPromoThunk = (body, token, cbSuccess, cbDenied) => {
     try {
       dispatch(createPromoPending());
       const result = await createPromo(body, token);
-      dispatch(createPromoFulfilled(result.data.data));
+      dispatch(createPromoFulfilled(result.data));
       if (typeof cbSuccess === 'function') {
         cbSuccess();
       }
     } catch (error) {
       dispatch(createPromoRejected(error));
+      console.log(error);
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
+const deletePromoThunk = (id, token, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(deletePromoPending());
+      const result = await deletePromo(id, token);
+      dispatch(deletePromoFulfilled(result.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
+    } catch (error) {
+      dispatch(deletePromoRejected(error));
+      console.log(error);
+      if (typeof cbDenied === 'function') {
+        cbDenied();
+      }
+    }
+  };
+};
+
+const deleteProductThunk = (id, token, cbSuccess, cbDenied) => {
+  return async dispatch => {
+    try {
+      dispatch(deleteProductPending());
+      const result = await deleteProduct(id, token);
+      dispatch(deleteProductFulfilled(result.data));
+      if (typeof cbSuccess === 'function') {
+        cbSuccess();
+      }
+    } catch (error) {
+      dispatch(deleteProductRejected(error));
       console.log(error);
       if (typeof cbDenied === 'function') {
         cbDenied();
@@ -289,6 +359,8 @@ const productAction = {
   getDetailPromoThunk,
   editPromoThunk,
   createPromoThunk,
+  deleteProductThunk,
+  deletePromoThunk,
 };
 
 export default productAction;

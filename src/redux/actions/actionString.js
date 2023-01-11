@@ -28,6 +28,8 @@ const ACTION_STRING = {
   editPromo: 'EDIT_PROMO',
   createPromo: 'CREATE_PROMO',
   editPassword: 'EDIT_PASSWORD',
+  deleteProduct: 'DELETE_PRODUCT',
+  deletePromo: 'DELETE_PROMO',
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,

@@ -21,6 +21,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const profile = useSelector(state => state.user.profile);
+  console.log(profile);
   const auth = useSelector(state => state.auth.userData);
 
   const toOerderHistory = () => {
@@ -60,16 +61,14 @@ const Profile = () => {
                 <ActivityIndicator />
               ) : (
                 <Image
-                  source={
-                    profile[0].image ? {uri: profile[0].image} : DefaultImg
-                  }
+                  source={profile.image ? {uri: profile.image} : DefaultImg}
                   style={{width: 80, height: 80, borderRadius: 200}}
                 />
               )}
             </View>
           </View>
           <View>
-            <Text style={styles.textName}>{profile[0].display_name}</Text>
+            <Text style={styles.textName}>{profile.display_name}</Text>
             <View
               style={{
                 borderBottomWidth: 0.5,
@@ -77,7 +76,7 @@ const Profile = () => {
                 borderBottomColor: '#6A4029',
                 marginBottom: 10,
               }}>
-              <Text style={styles.textEmail}>{profile[0].email}</Text>
+              <Text style={styles.textEmail}>{profile.email}</Text>
             </View>
             <View
               style={{
@@ -86,9 +85,9 @@ const Profile = () => {
                 borderBottomColor: '#6A4029',
                 marginBottom: 10,
               }}>
-              <Text style={styles.textPhone}>{profile[0].phone_number}</Text>
+              <Text style={styles.textPhone}>{profile.phone_number}</Text>
             </View>
-            <Text style={styles.address}>{profile[0].delivery_address}</Text>
+            <Text style={styles.address}>{profile.delivery_address}</Text>
           </View>
         </View>
         <View style={{marginTop: 25}}>

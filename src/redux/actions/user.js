@@ -30,16 +30,16 @@ const editProfileFulfilled = data => ({
 });
 
 const editPasswordPending = () => ({
-  type: ACTION_STRING.editProfile.concat(ACTION_STRING.pending),
+  type: ACTION_STRING.editPassword.concat(ACTION_STRING.pending),
 });
 
 const editPasswordRejected = error => ({
-  type: ACTION_STRING.editProfile.concat(ACTION_STRING.rejected),
+  type: ACTION_STRING.editPassword.concat(ACTION_STRING.rejected),
   payload: {error},
 });
 
 const editPasswordFulfilled = data => ({
-  type: ACTION_STRING.editProfile.concat(ACTION_STRING.fulfilled),
+  type: ACTION_STRING.editPassword.concat(ACTION_STRING.fulfilled),
   payload: {data},
 });
 
@@ -55,7 +55,7 @@ const getProfileThunk = (token, cbSuccess, cbDenied) => {
     } catch (error) {
       dispatch(getProfileRejected(error));
       console.log(error);
-      if (typeof cbSuccess === 'function') {
+      if (typeof cbDenied === 'function') {
         cbDenied();
       }
     }
@@ -74,7 +74,7 @@ const editProfileThunk = (body, token, cbSuccess, cbDenied) => {
     } catch (error) {
       dispatch(editProfileRejected(error));
       console.log(error);
-      if (typeof cbSuccess === 'function') {
+      if (typeof cbDenied === 'function') {
         cbDenied();
       }
     }
@@ -94,7 +94,7 @@ const editPasswordThunk = (body, token, cbSuccess, cbDenied) => {
       dispatch(editPasswordRejected(error));
       console.log(error);
       if (typeof cbSuccess === 'function') {
-        cbDenied();
+        cbDenied(error.response.data.status);
       }
     }
   };

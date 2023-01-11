@@ -125,16 +125,16 @@ function Payment() {
           {updateCart.length > 0 &&
             updateCart.map((item, idx) => {
               return (
-                <View style={styles.Containercard}>
+                <View style={styles.Containercard} key={idx}>
                   <View style={styles.card}>
-                    <>
+                    <View>
                       <Image
                         source={{
                           uri: item.image !== null ? item.image : ImageDefault,
                         }}
                         style={styles.imageCard}
                       />
-                    </>
+                    </View>
                     <View
                       style={{
                         marginHorizontal: 15,

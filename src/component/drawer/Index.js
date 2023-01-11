@@ -27,22 +27,26 @@ import Hambuger from '../../assets/images/hamburger.png';
 import ShoppingCart from '../../assets/images/shopping-cart.png';
 import FontAwesome, {SolidIcons} from 'react-native-fontawesome';
 import {clearState} from '../../helper/clearState';
+// import Modal from '../../component/modalLogout/Index';
 
 function Navbar({children}) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const profile = useSelector(state => state.user.profile);
-  console.log(profile);
   const auth = useSelector(state => state.auth.userData);
   const [modalVisible, setModalVisible] = useState(false);
   const refDrawer = useRef();
-  // const [openDrawer, setOpenDrawer] = useState(false);
+
+  useEffect(() => {
+    dispatch(userAction.getProfileThunk(auth.token));
+  }, [dispatch, auth.token]);
 
   const logoutHandler = () => {
     const LogoutSuccess = () => {
       clearState(dispatch);
       navigation.navigate('Welcome');
     };
+
     const LogoutError = error => {
       ToastAndroid.showWithGravityAndOffset(
         `${error}`,
@@ -53,44 +57,52 @@ function Navbar({children}) {
     dispatch(authAction.logoutThunk(auth.token, LogoutSuccess, LogoutError));
   };
 
-  useEffect(() => {
-    dispatch(userAction.getProfileThunk(auth.token));
-  }, [dispatch, auth.token]);
-
   const renderDrawer = () => {
     return (
       <View>
-        {profile.length > 0 && (
-          <View style={styles.continerSwipe}>
-            <Image
-              source={
-                `${profile[0].image}`
-                  ? {uri: `${profile[0].image}`}
-                  : DefaultImg
-              }
-              // source={profile[0].image}
-              style={styles.imageDrawer}
-            />
-            <Text style={styles.username}>{profile[0].display_name}</Text>
-            <Text style={styles.email}>{profile[0].email}</Text>
-          </View>
-        )}
+        <View style={styles.continerSwipe}>
+          <Image
+            source={profile.image ? {uri: `${profile.image}`} : DefaultImg}
+            // source={{uri: `${profile[0].image}`} || DefaultImg}
+            // source={profile[0].image}
+            style={styles.imageDrawer}
+          />
+          <Pressable
+            style={{alignItems: 'center'}}
+            onPress={() => {
+              refDrawer.current.closeDrawer();
+              navigation.navigate('ProfileTab', {screen: 'Profile'});
+            }}>
+            <Text style={styles.username}>{profile.display_name}</Text>
+            <Text style={styles.email}>{profile.email}</Text>
+          </Pressable>
+        </View>
         <View style={styles.content}>
           <View>
+            {auth.role === 'user' ? (
+              <View>
+                <Pressable
+                  style={styles.containerBottom}
+                  onPress={() => {
+                    refDrawer.current.closeDrawer();
+                    navigation.navigate('ProfileTab', {screen: 'Edit Profile'});
+                  }}>
+                  <Image source={IconProfile} style={styles.imageBottom} />
+                  <Text style={styles.textBottom}>Edit Profile</Text>
+                </Pressable>
+                <Divider style={styles.devider} />
+              </View>
+            ) : null}
+
             <Pressable
               style={styles.containerBottom}
               onPress={() => {
                 refDrawer.current.closeDrawer();
-                navigation.navigate('ProfileTab', {screen: 'Edit Profile'});
+                navigation.navigate('HomeTab', {screen: 'Cart'});
               }}>
-              <Image source={IconProfile} style={styles.imageBottom} />
-              <Text style={styles.textBottom}>Edit Profile</Text>
-            </Pressable>
-            <Divider style={styles.devider} />
-            <View style={styles.containerBottom}>
               <Image source={IconCart} style={styles.imageBottom} />
               <Text style={styles.textBottom}>Orders</Text>
-            </View>
+            </Pressable>
             <Divider style={styles.devider} />
             <Pressable
               style={styles.containerBottom}

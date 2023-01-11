@@ -155,6 +155,7 @@ function AllPromo() {
         promo.length > 0 && (
           <FlatList
             data={promo}
+            keyExtractor={item => item.id}
             renderItem={({item, idx}) => {
               return (
                 // <Card

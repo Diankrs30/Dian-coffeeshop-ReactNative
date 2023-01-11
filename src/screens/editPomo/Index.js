@@ -20,6 +20,7 @@ import {
 
 import styles from './style';
 import calendar from '../../assets/images/calendar.png';
+import SelectDropdown from 'react-native-select-dropdown';
 const back = require('../../assets/images/iconBack.png');
 const trash = require('../../assets/images/trash.png');
 
@@ -27,7 +28,19 @@ function EditPromo(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const id = props.route.params.id;
-  const promo = useSelector(state => state.product.detailPromo);
+  const AllProduct = useSelector(state => state.product.allProduct);
+  const [promo, setPromo] = useState({
+    id: null,
+    promo_name: null,
+    product_name: null,
+    promo_description: null,
+    discount: '',
+    start_discount: null,
+    end_discount: null,
+    code_promo: null,
+    image: null,
+  });
+  const errorMsg = useSelector(state => state.product.error);
   const token = useSelector(state => state.auth.userData.token);
   const isLoading = useSelector(state => state.product.isLoading);
   const [body, setBody] = useState({});
@@ -44,6 +57,7 @@ function EditPromo(props) {
   const dateHandler = date => new Date(date).toLocaleDateString();
 
   const editPromoHandler = () => {
+    console.log('>>>>>>', body);
     const updateSuccess = () => {
       ToastAndroid.showWithGravity(
         'Data changed successfully',
@@ -52,23 +66,32 @@ function EditPromo(props) {
         navigation.navigate('All Promo'),
       );
     };
-    const updateDenied = error => {
+    const updateDenied = () => {
       ToastAndroid.showWithGravity(
-        `${error}`,
+        `${errorMsg}`,
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
       );
     };
 
     let bodies = new FormData();
-    if (body?.code_promo) {
-      bodies.append('code_promo', body.code_promo);
+    // if (body?.products_id) {
+    //   bodies.append('products_id', body.products_id);
+    // }
+    if (body?.promo_description) {
+      bodies.append('promo_description', body.promo_description);
     }
     if (body?.discount) {
       bodies.append('discount', body.discount);
     }
-    if (updateDateEnd !== promo[0].end_discount) {
+    if (updateDateStart !== promo.start_discount) {
+      bodies.append('start_discount', updateDateStart);
+    }
+    if (updateDateEnd !== promo.end_discount) {
       bodies.append('end_discount', updateDateEnd);
+    }
+    if (body?.code_promo) {
+      bodies.append('code_promo', body.code_promo);
     }
     if (file) {
       bodies.append('image', {
@@ -78,18 +101,13 @@ function EditPromo(props) {
           Platform.OS !== 'android' ? 'file://' + file[0]?.uri : file[0]?.uri,
       });
     }
-    if (body?.promo_description) {
-      bodies.append('promo_description', body.promo_description);
-    }
-    if (body?.promo_name) {
-      bodies.append('promo_name', body.promo_name);
-    }
-    if (updateDateStart !== promo[0].start_discount) {
-      bodies.append('start_discount', updateDateStart);
-    }
-
-    console.log(bodies);
-    console.log(body);
+    // if (body?.promo_name) {
+    //   bodies.append('promo_name', body.promo_name);
+    // }
+    // for (const [key, value] of bodies.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
+    // console.log(bodies);
 
     dispatch(
       productAction.editPromoThunk(
@@ -148,9 +166,14 @@ function EditPromo(props) {
     });
   };
 
+  const getDetailPromo = async () => {
+    const result = await dispatch(productAction.getDetailPromoThunk(id, token));
+    console.log(result.data.data[0]);
+    setPromo(result.data.data[0]);
+  };
   useEffect(() => {
-    dispatch(productAction.getDetailPromoThunk(id, token));
-  }, [dispatch, token, id]);
+    getDetailPromo();
+  }, []);
 
   return (
     <>
@@ -180,8 +203,8 @@ function EditPromo(props) {
                   source={
                     file
                       ? {uri: file[0].uri}
-                      : promo[0].image
-                      ? {uri: promo[0].image}
+                      : promo.image
+                      ? {uri: promo.image}
                       : camera
                   }
                 />
@@ -240,17 +263,34 @@ function EditPromo(props) {
               <TextInput
                 style={styles.input_bottom}
                 placeholder={
-                  promo[0].promo_name || 'Type promo name max. 30 characters'
+                  promo.promo_name || 'Type promo name max. 30 characters'
                 }
                 keyboardType="none"
                 placeholderTextColor="#000"
                 onChangeText={text => changeHandler(text, 'promo_name')}
               />
+              {/* <SelectDropdown
+                data={AllProduct}
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem, index);
+                  setBody({...body, products_id: selectedItem.id});
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem.product_name;
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item.product_name;
+                }}
+              /> */}
               <Text style={styles.text}>Discount</Text>
               <TextInput
                 style={styles.input_bottom}
                 placeholder={
-                  promo[0].discount.toString() || 'Type Discount Percentage'
+                  promo.discount.toString() || 'Type Discount Percentage'
                 }
                 keyboardType="numeric"
                 placeholderTextColor="#000"
@@ -259,7 +299,7 @@ function EditPromo(props) {
               <Text style={styles.text}>Promo Code</Text>
               <TextInput
                 style={styles.input_bottom}
-                placeholder={promo[0].code_promo || 'Type Promo Code'}
+                placeholder={promo.code_promo || 'Type Promo Code'}
                 keyboardType="none"
                 placeholderTextColor="#000"
                 onChangeText={text => changeHandler(text, 'code_promo')}
@@ -274,7 +314,7 @@ function EditPromo(props) {
                     }}>
                     <Text
                       style={
-                        updateDateStart === promo[0].start_discount
+                        updateDateStart === promo.start_discount
                           ? styles.berubah
                           : styles.tanggal
                       }>
@@ -317,7 +357,7 @@ function EditPromo(props) {
                     }}>
                     <Text
                       style={
-                        updateDateEnd === promo[0].end_discount
+                        updateDateEnd === promo.end_discount
                           ? styles.berubah
                           : styles.tanggal
                       }>
@@ -354,7 +394,7 @@ function EditPromo(props) {
               <TextInput
                 style={styles.input_bottom}
                 placeholder={
-                  promo[0].promo_description ||
+                  promo.promo_description ||
                   'Describe your promo max. 150 characters'
                 }
                 keyboardType="none"

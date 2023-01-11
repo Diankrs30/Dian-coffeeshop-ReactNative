@@ -54,6 +54,7 @@ const getHistoryThunk = (param, token) => {
       dispatch(getHistoryPending());
       const result = await getHistory(param, token);
       dispatch(getHistoryFulfilled(result.data));
+      return result.data;
     } catch (error) {
       dispatch(getHistoryRejected(error));
     }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   View,
@@ -20,17 +20,17 @@ import styles from './style';
 import bg from '../../assets/images/bg-login.png';
 import icon from '../../assets/images/logo-google.png';
 
-const SignUp = () => {
+const SignIn = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth);
+  const errorMsg = useSelector(state => state.auth.error);
   const isPending = useSelector(state => state.auth.isLoading);
   const [isPwdShown, setIsPwdShown] = useState(true);
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
-  console.log('login', form);
 
   const onPressForgot = () => {
     navigation.navigate('Forgot Password');
@@ -46,7 +46,7 @@ const SignUp = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('page login', form);
+    // console.log('page login', form);
 
     if (!form.email && !form.password) {
       return ToastAndroid.showWithGravity(
@@ -78,9 +78,9 @@ const SignUp = () => {
       navigation.navigate('Home');
     };
 
-    const loginDenied = () => {
+    const loginDenied = errorMsg => {
       ToastAndroid.showWithGravity(
-        `${auth.error}`,
+        `${errorMsg}`,
         ToastAndroid.SHORT,
         ToastAndroid.TOP,
       );
@@ -149,4 +149,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

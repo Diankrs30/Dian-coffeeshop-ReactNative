@@ -31,7 +31,7 @@ function NewProduct() {
 
   const [modal, setModalVisible] = useState(false);
 
-  const [category, setCategory] = useState(detailProduct[0].category);
+  const [category, setCategory] = useState();
   const [body, setBody] = useState({});
   const [file, setFile] = useState();
 
@@ -77,7 +77,7 @@ function NewProduct() {
     if (body?.stock_product) {
       bodies.append('stock_product', body.stock_product);
     }
-    if (category !== detailProduct[0].category_id) {
+    if (category !== detailProduct[0].category) {
       bodies.append('category_id', category);
     }
 
